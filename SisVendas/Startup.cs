@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using SisVendas.Models;
 
 namespace SisVendas
 {
@@ -33,6 +35,15 @@ namespace SisVendas
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<SisVendasContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("SisVendasContext"), builder =>
+                        builder.MigrationsAssembly("SisVendas")));
+
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

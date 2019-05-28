@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ namespace SisVendas.Models
 {
     public class Cliente
     {
+        [Key]
         public int IdCli { get; set; }
         public string strNomeCli { get; set; }
         public DateTime DtNasc { get; set; }
