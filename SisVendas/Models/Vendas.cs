@@ -13,17 +13,11 @@ namespace SisVendas.Models
         public int IdVenda { get; set; }
         public DateTime dtVenda { get; set; }
         public double douVlVenda { get; set; }
-        //public StatusVendas StatusVenda { get; set; }
+        public StatusVendas Status { get; set; }
 
         public Vendas()
         {}
 
-        public Vendas(int idVenda, DateTime dtVenda, double douVlVenda)
-        {
-            IdVenda = idVenda;
-            this.dtVenda = dtVenda;
-            this.douVlVenda = douVlVenda;
-            //StatusVenda = statusVenda;
-        }
+        
     }
 }

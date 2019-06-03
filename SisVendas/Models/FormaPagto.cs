@@ -10,6 +10,9 @@ namespace SisVendas.Models
     {
         [Key]
         public int IdPagto { get; set; }
+
+        [Required(ErrorMessage = "{0} requerido!")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {}!")]
         public string strPagto { get; set; }
 
         public FormaPagto()

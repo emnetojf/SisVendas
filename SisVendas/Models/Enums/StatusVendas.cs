@@ -1,6 +1,6 @@
 ﻿namespace SisVendas.Models.Enums
 {
-    enum StatusVendas
+    public enum StatusVendas
     {
         Cancelado,
         Faturado,
