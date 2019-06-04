@@ -51,7 +51,7 @@ namespace SisVendas.Controllers
         {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "IdCli", "strNomeCli");
             ViewData["PagtoId"] = new SelectList(_context.FormaPagtos, "IdPagto", "strPagto");
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "IdVend", "strEmail");
+            ViewData["VendedorId"] = new SelectList(_context.Vendedor, "IdVend", "strEmail");
             return View();
         }
 
@@ -70,7 +70,7 @@ namespace SisVendas.Controllers
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "IdCli", "strNomeCli", vendas.ClienteId);
             ViewData["PagtoId"] = new SelectList(_context.FormaPagtos, "IdPagto", "strPagto", vendas.PagtoId);
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "IdVend", "strEmail", vendas.VendedorId);
+            ViewData["VendedorId"] = new SelectList(_context.Vendedor, "IdVend", "strEmail", vendas.VendedorId);
             return View(vendas);
         }
 
@@ -89,7 +89,7 @@ namespace SisVendas.Controllers
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "IdCli", "strNomeCli", vendas.ClienteId);
             ViewData["PagtoId"] = new SelectList(_context.FormaPagtos, "IdPagto", "strPagto", vendas.PagtoId);
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "IdVend", "strEmail", vendas.VendedorId);
+            ViewData["VendedorId"] = new SelectList(_context.Vendedor, "IdVend", "strEmail", vendas.VendedorId);
             return View(vendas);
         }
 
@@ -127,7 +127,7 @@ namespace SisVendas.Controllers
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "IdCli", "strNomeCli", vendas.ClienteId);
             ViewData["PagtoId"] = new SelectList(_context.FormaPagtos, "IdPagto", "strPagto", vendas.PagtoId);
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "IdVend", "strEmail", vendas.VendedorId);
+            ViewData["VendedorId"] = new SelectList(_context.Vendedor, "IdVend", "strEmail", vendas.VendedorId);
             return View(vendas);
         }
 
