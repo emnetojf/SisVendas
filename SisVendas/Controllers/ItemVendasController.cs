@@ -9,22 +9,23 @@ using SisVendas.Models;
 
 namespace SisVendas.Controllers
 {
-    public class DepartamentosController : Controller
+    public class ItemVendasController : Controller
     {
         private readonly SisVendasContext _context;
 
-        public DepartamentosController(SisVendasContext context)
+        public ItemVendasController(SisVendasContext context)
         {
             _context = context;
         }
 
-        // GET: Departamentos
+        // GET: ItemVendas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departamentos.ToListAsync());
+            var sisVendasContext = _context.ItemVendas.Include(i => i.Vendas);
+            return View(await sisVendasContext.ToListAsync());
         }
 
-        // GET: Departamentos/Details/5
+        // GET: ItemVendas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +33,42 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var itemVendas = await _context.ItemVendas
+                .Include(i => i.Vendas)
+                .FirstOrDefaultAsync(m => m.ItemVendasID == id);
+            if (itemVendas == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(itemVendas);
         }
 
-        // GET: Departamentos/Create
+        // GET: ItemVendas/Create
         public IActionResult Create()
         {
+            ViewData["VendasId"] = new SelectList(_context.Vendas, "IdVenda", "IdVenda");
             return View();
         }
 
-        // POST: Departamentos/Create
+        // POST: ItemVendas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Create([Bind("ItemVendasID,VendasId,ProdId,intQuant,douValor")] ItemVendas itemVendas)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(departamento);
+                _context.Add(itemVendas);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            ViewData["VendasId"] = new SelectList(_context.Vendas, "IdVenda", "IdVenda", itemVendas.VendasId);
+            return View(itemVendas);
         }
 
-        // GET: Departamentos/Edit/5
+        // GET: ItemVendas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +76,23 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos.FindAsync(id);
-            if (departamento == null)
+            var itemVendas = await _context.ItemVendas.FindAsync(id);
+            if (itemVendas == null)
             {
                 return NotFound();
             }
-            return View(departamento);
+            ViewData["VendasId"] = new SelectList(_context.Vendas, "IdVenda", "IdVenda", itemVendas.VendasId);
+            return View(itemVendas);
         }
 
-        // POST: Departamentos/Edit/5
+        // POST: ItemVendas/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Edit(int id, [Bind("ItemVendasID,VendasId,ProdId,intQuant,douValor")] ItemVendas itemVendas)
         {
-            if (id != departamento.IdDepto)
+            if (id != itemVendas.ItemVendasID)
             {
                 return NotFound();
             }
@@ -96,12 +101,12 @@ namespace SisVendas.Controllers
             {
                 try
                 {
-                    _context.Update(departamento);
+                    _context.Update(itemVendas);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartamentoExists(departamento.IdDepto))
+                    if (!ItemVendasExists(itemVendas.ItemVendasID))
                     {
                         return NotFound();
                     }
@@ -112,10 +117,11 @@ namespace SisVendas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            ViewData["VendasId"] = new SelectList(_context.Vendas, "IdVenda", "IdVenda", itemVendas.VendasId);
+            return View(itemVendas);
         }
 
-        // GET: Departamentos/Delete/5
+        // GET: ItemVendas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +129,31 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var itemVendas = await _context.ItemVendas
+                .Include(i => i.Vendas)
+                .FirstOrDefaultAsync(m => m.ItemVendasID == id);
+            if (itemVendas == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(itemVendas);
         }
 
-        // POST: Departamentos/Delete/5
+        // POST: ItemVendas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var departamento = await _context.Departamentos.FindAsync(id);
-            _context.Departamentos.Remove(departamento);
+            var itemVendas = await _context.ItemVendas.FindAsync(id);
+            _context.ItemVendas.Remove(itemVendas);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartamentoExists(int id)
+        private bool ItemVendasExists(int id)
         {
-            return _context.Departamentos.Any(e => e.IdDepto == id);
+            return _context.ItemVendas.Any(e => e.ItemVendasID == id);
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿@model SisVendas.Models.ItemVendas
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ItemVendas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendas)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vendas.IdVenda)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProdId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProdId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.intQuant)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.intQuant)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.douValor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.douValor)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ItemVendasID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

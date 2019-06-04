@@ -1,4 +1,4 @@
-﻿@model SisVendas.Models.Departamento
+﻿@model SisVendas.Models.FormaPagto
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,17 +6,17 @@
 
 <h2>Edit</h2>
 
-<h4>Departamento</h4>
+<h4>FormaPagto</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdDepto" />
+            <input type="hidden" asp-for="IdPagto" />
             <div class="form-group">
-                <label asp-for="strDepto" class="control-label"></label>
-                <input asp-for="strDepto" class="form-control" />
-                <span asp-validation-for="strDepto" class="text-danger"></span>
+                <label asp-for="strPagto" class="control-label"></label>
+                <input asp-for="strPagto" class="form-control" />
+                <span asp-validation-for="strPagto" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

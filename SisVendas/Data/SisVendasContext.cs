@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace SisVendas.Models
 {
@@ -13,12 +9,13 @@ namespace SisVendas.Models
         {
         }
 
-        public DbSet<SisVendas.Models.Departamento> Departamento { get; set; }
-        public DbSet<SisVendas.Models.Produto> Produto { get; set; }
-        public DbSet<SisVendas.Models.Vendedor> Vendedor { get; set; }
-        public DbSet<SisVendas.Models.Cliente> Cliente { get; set; }
-        public DbSet<SisVendas.Models.FormaPagto> FormaPagto { get; set; }
+        public DbSet<SisVendas.Models.Departamento> Departamentos { get; set; }
+        public DbSet<SisVendas.Models.Produto> Produtos { get; set; }
+        public DbSet<SisVendas.Models.Vendedor> Vendedores { get; set; }
+        public DbSet<SisVendas.Models.Cliente> Clientes { get; set; }
+        public DbSet<SisVendas.Models.FormaPagto> FormaPagtos { get; set; }
         public DbSet<SisVendas.Models.Vendas> Vendas { get; set; }
-        
+        public DbSet<SisVendas.Models.ItemVendas> ItemVendas { get; set; }
+
     }
 }

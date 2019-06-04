@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace SisVendas.Models
@@ -28,7 +25,7 @@ namespace SisVendas.Models
 
         public Departamento Depto { get; set; }
         public int DeptoId { get; set; }
-        public ICollection<Vendas> ListVendas { get; set; } = new List<Vendas>();
+        
 
 
         public Vendedor()
@@ -43,19 +40,6 @@ namespace SisVendas.Models
             this.Depto = depto;
         }
 
-        public void AdicVendas(Vendas vendas)
-        {
-            ListVendas.Add(vendas);
-        }
-
-        public void RemovVendas(Vendas vendas)
-        {
-            ListVendas.Remove(vendas);
-        }
-
-        public double TotalVendas(DateTime DtInicial, DateTime DtFinal)
-        {
-            return ListVendas.Where(Vendas => Vendas.dtVenda >= DtInicial && Vendas.dtVenda <= DtInicial).Sum(Vendas => Vendas.douVlVenda);
-        }
+       
     }
 }

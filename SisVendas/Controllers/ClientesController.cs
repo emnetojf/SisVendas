@@ -9,22 +9,22 @@ using SisVendas.Models;
 
 namespace SisVendas.Controllers
 {
-    public class DepartamentosController : Controller
+    public class ClientesController : Controller
     {
         private readonly SisVendasContext _context;
 
-        public DepartamentosController(SisVendasContext context)
+        public ClientesController(SisVendasContext context)
         {
             _context = context;
         }
 
-        // GET: Departamentos
+        // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departamentos.ToListAsync());
+            return View(await _context.Clientes.ToListAsync());
         }
 
-        // GET: Departamentos/Details/5
+        // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,39 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(m => m.IdCli == id);
+            if (cliente == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(cliente);
         }
 
-        // GET: Departamentos/Create
+        // GET: Clientes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departamentos/Create
+        // POST: Clientes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Create([Bind("IdCli,strNomeCli,DtNasc,Sexo,UF")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(departamento);
+                _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            return View(cliente);
         }
 
-        // GET: Departamentos/Edit/5
+        // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +72,22 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos.FindAsync(id);
-            if (departamento == null)
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null)
             {
                 return NotFound();
             }
-            return View(departamento);
+            return View(cliente);
         }
 
-        // POST: Departamentos/Edit/5
+        // POST: Clientes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Edit(int id, [Bind("IdCli,strNomeCli,DtNasc,Sexo,UF")] Cliente cliente)
         {
-            if (id != departamento.IdDepto)
+            if (id != cliente.IdCli)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace SisVendas.Controllers
             {
                 try
                 {
-                    _context.Update(departamento);
+                    _context.Update(cliente);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartamentoExists(departamento.IdDepto))
+                    if (!ClienteExists(cliente.IdCli))
                     {
                         return NotFound();
                     }
@@ -112,10 +112,10 @@ namespace SisVendas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            return View(cliente);
         }
 
-        // GET: Departamentos/Delete/5
+        // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +123,30 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(m => m.IdCli == id);
+            if (cliente == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(cliente);
         }
 
-        // POST: Departamentos/Delete/5
+        // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var departamento = await _context.Departamentos.FindAsync(id);
-            _context.Departamentos.Remove(departamento);
+            var cliente = await _context.Clientes.FindAsync(id);
+            _context.Clientes.Remove(cliente);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartamentoExists(int id)
+        private bool ClienteExists(int id)
         {
-            return _context.Departamentos.Any(e => e.IdDepto == id);
+            return _context.Clientes.Any(e => e.IdCli == id);
         }
     }
 }

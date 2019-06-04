@@ -25,9 +25,6 @@ namespace SisVendas.Models
         public UF UF { get; set; }
 
 
-        public List<Vendas> ListCompras { get; set; } = new List<Vendas>();
-
-
         public Cliente()
         { }
 
@@ -40,20 +37,6 @@ namespace SisVendas.Models
             UF = uf;
         }
 
-        public void AdicVendas (Vendas vendas)
-        {
-            ListCompras.Add(vendas);
-        }
-
-        public void RemovVendas(Vendas vendas)
-        {
-            ListCompras.Remove(vendas);
-        }
-
-        public double TotalCompras(DateTime DtInicial, DateTime DtFinal)
-        {
-            return ListCompras.Where(Vendas => Vendas.dtVenda >= DtInicial && Vendas.dtVenda <= DtInicial).Sum(Vendas => Vendas.douVlVenda);
-        }
-
+      
     }
 }

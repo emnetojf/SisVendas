@@ -9,22 +9,22 @@ using SisVendas.Models;
 
 namespace SisVendas.Controllers
 {
-    public class DepartamentosController : Controller
+    public class FormaPagtosController : Controller
     {
         private readonly SisVendasContext _context;
 
-        public DepartamentosController(SisVendasContext context)
+        public FormaPagtosController(SisVendasContext context)
         {
             _context = context;
         }
 
-        // GET: Departamentos
+        // GET: FormaPagtos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departamentos.ToListAsync());
+            return View(await _context.FormaPagtos.ToListAsync());
         }
 
-        // GET: Departamentos/Details/5
+        // GET: FormaPagtos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,39 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var formaPagto = await _context.FormaPagtos
+                .FirstOrDefaultAsync(m => m.IdPagto == id);
+            if (formaPagto == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(formaPagto);
         }
 
-        // GET: Departamentos/Create
+        // GET: FormaPagtos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departamentos/Create
+        // POST: FormaPagtos/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Create([Bind("IdPagto,strPagto")] FormaPagto formaPagto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(departamento);
+                _context.Add(formaPagto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            return View(formaPagto);
         }
 
-        // GET: Departamentos/Edit/5
+        // GET: FormaPagtos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +72,22 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos.FindAsync(id);
-            if (departamento == null)
+            var formaPagto = await _context.FormaPagtos.FindAsync(id);
+            if (formaPagto == null)
             {
                 return NotFound();
             }
-            return View(departamento);
+            return View(formaPagto);
         }
 
-        // POST: Departamentos/Edit/5
+        // POST: FormaPagtos/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Edit(int id, [Bind("IdPagto,strPagto")] FormaPagto formaPagto)
         {
-            if (id != departamento.IdDepto)
+            if (id != formaPagto.IdPagto)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace SisVendas.Controllers
             {
                 try
                 {
-                    _context.Update(departamento);
+                    _context.Update(formaPagto);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartamentoExists(departamento.IdDepto))
+                    if (!FormaPagtoExists(formaPagto.IdPagto))
                     {
                         return NotFound();
                     }
@@ -112,10 +112,10 @@ namespace SisVendas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            return View(formaPagto);
         }
 
-        // GET: Departamentos/Delete/5
+        // GET: FormaPagtos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +123,30 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var formaPagto = await _context.FormaPagtos
+                .FirstOrDefaultAsync(m => m.IdPagto == id);
+            if (formaPagto == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(formaPagto);
         }
 
-        // POST: Departamentos/Delete/5
+        // POST: FormaPagtos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var departamento = await _context.Departamentos.FindAsync(id);
-            _context.Departamentos.Remove(departamento);
+            var formaPagto = await _context.FormaPagtos.FindAsync(id);
+            _context.FormaPagtos.Remove(formaPagto);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartamentoExists(int id)
+        private bool FormaPagtoExists(int id)
         {
-            return _context.Departamentos.Any(e => e.IdDepto == id);
+            return _context.FormaPagtos.Any(e => e.IdPagto == id);
         }
     }
 }

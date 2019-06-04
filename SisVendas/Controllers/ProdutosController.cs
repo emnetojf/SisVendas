@@ -9,22 +9,22 @@ using SisVendas.Models;
 
 namespace SisVendas.Controllers
 {
-    public class DepartamentosController : Controller
+    public class ProdutosController : Controller
     {
         private readonly SisVendasContext _context;
 
-        public DepartamentosController(SisVendasContext context)
+        public ProdutosController(SisVendasContext context)
         {
             _context = context;
         }
 
-        // GET: Departamentos
+        // GET: Produtos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departamentos.ToListAsync());
+            return View(await _context.Produtos.ToListAsync());
         }
 
-        // GET: Departamentos/Details/5
+        // GET: Produtos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,39 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var produto = await _context.Produtos
+                .FirstOrDefaultAsync(m => m.IdProd == id);
+            if (produto == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(produto);
         }
 
-        // GET: Departamentos/Create
+        // GET: Produtos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departamentos/Create
+        // POST: Produtos/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Create([Bind("IdProd,strNomeProd,douPreco")] Produto produto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(departamento);
+                _context.Add(produto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            return View(produto);
         }
 
-        // GET: Departamentos/Edit/5
+        // GET: Produtos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +72,22 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos.FindAsync(id);
-            if (departamento == null)
+            var produto = await _context.Produtos.FindAsync(id);
+            if (produto == null)
             {
                 return NotFound();
             }
-            return View(departamento);
+            return View(produto);
         }
 
-        // POST: Departamentos/Edit/5
+        // POST: Produtos/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdDepto,strDepto")] Departamento departamento)
+        public async Task<IActionResult> Edit(int id, [Bind("IdProd,strNomeProd,douPreco")] Produto produto)
         {
-            if (id != departamento.IdDepto)
+            if (id != produto.IdProd)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace SisVendas.Controllers
             {
                 try
                 {
-                    _context.Update(departamento);
+                    _context.Update(produto);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartamentoExists(departamento.IdDepto))
+                    if (!ProdutoExists(produto.IdProd))
                     {
                         return NotFound();
                     }
@@ -112,10 +112,10 @@ namespace SisVendas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(departamento);
+            return View(produto);
         }
 
-        // GET: Departamentos/Delete/5
+        // GET: Produtos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +123,30 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var departamento = await _context.Departamentos
-                .FirstOrDefaultAsync(m => m.IdDepto == id);
-            if (departamento == null)
+            var produto = await _context.Produtos
+                .FirstOrDefaultAsync(m => m.IdProd == id);
+            if (produto == null)
             {
                 return NotFound();
             }
 
-            return View(departamento);
+            return View(produto);
         }
 
-        // POST: Departamentos/Delete/5
+        // POST: Produtos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var departamento = await _context.Departamentos.FindAsync(id);
-            _context.Departamentos.Remove(departamento);
+            var produto = await _context.Produtos.FindAsync(id);
+            _context.Produtos.Remove(produto);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartamentoExists(int id)
+        private bool ProdutoExists(int id)
         {
-            return _context.Departamentos.Any(e => e.IdDepto == id);
+            return _context.Produtos.Any(e => e.IdProd == id);
         }
     }
 }

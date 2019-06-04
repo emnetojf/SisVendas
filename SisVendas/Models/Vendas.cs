@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using SisVendas.Models.Enums;
 
 namespace SisVendas.Models
@@ -11,13 +8,35 @@ namespace SisVendas.Models
     {
         [Key]
         public int IdVenda { get; set; }
+
+        public Vendedor Vendedor { get; set; }
+        public int VendedorId { get; set; }
+
+        public Cliente Cliente { get; set; }
+        public int ClienteId { get; set; }
+
+        public FormaPagto Pagto { get; set; }
+        public int PagtoId { get; set; }
+
+        [Required(ErrorMessage = "{0} requerido!")]
+        [Display(Name = "Data Venda")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]       
         public DateTime dtVenda { get; set; }
-        public double douVlVenda { get; set; }
+
         public StatusVendas Status { get; set; }
 
         public Vendas()
         {}
 
-        
+        public Vendas(int idVenda, Vendedor vendedor, Cliente cliente, FormaPagto pagto, DateTime dtVenda, StatusVendas status)
+        {
+            IdVenda = idVenda;
+            Vendedor = vendedor;
+            Cliente = cliente;
+            Pagto = pagto;
+            this.dtVenda = dtVenda;
+            Status = status;
+        }
     }
 }
