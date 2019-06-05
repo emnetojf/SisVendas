@@ -11,6 +11,8 @@ namespace SisVendas.Controllers
 {
     public class FormaPagtosController : Controller
     {
+        
+
         private readonly SisVendasContext _context;
 
         public FormaPagtosController(SisVendasContext context)
@@ -148,5 +150,7 @@ namespace SisVendas.Controllers
         {
             return _context.FormaPagtos.Any(e => e.IdPagto == id);
         }
+
+    
     }
 }

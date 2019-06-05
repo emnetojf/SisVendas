@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<SisVendas.Models.Departamento>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Departamentos";
 }
 
-<h2>Index</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Criar Departamento</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.strDepto)
+                @Html.DisplayName("Nome Departamento")
             </th>
             <th></th>
         </tr>
@@ -25,9 +25,9 @@
                 @Html.DisplayFor(modelItem => item.strDepto)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdDepto">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdDepto">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdDepto">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdDepto">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdDepto">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdDepto">Deletar</a>
             </td>
         </tr>
 }

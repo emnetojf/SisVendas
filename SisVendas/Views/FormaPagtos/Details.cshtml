@@ -1,17 +1,17 @@
 ﻿@model SisVendas.Models.FormaPagto
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes Forma Pagto";
 }
 
-<h2>Details</h2>
+<h4>@ViewData["Title"]</h4>
 
 <div>
-    <h4>FormaPagto</h4>
+    
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.strPagto)
+            @Html.DisplayName("Nome Forma Pagto")
         </dt>
         <dd>
             @Html.DisplayFor(model => model.strPagto)
@@ -19,6 +19,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IdPagto">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.IdPagto">Editar</a> |
+    <a asp-action="Index">Retorna Lista</a>
 </div>

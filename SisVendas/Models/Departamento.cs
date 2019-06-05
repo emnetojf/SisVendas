@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace SisVendas.Models
 {
@@ -14,9 +12,6 @@ namespace SisVendas.Models
         [StringLength(20, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {1}!")]
         public string strDepto { get; set; }
         
-       
-
-
         public Departamento()
         { }
 
@@ -24,11 +19,6 @@ namespace SisVendas.Models
         {
             IdDepto = idDepto;
             this.strDepto = strDepto;
-        }
-
-       
-
-
-      
+        }       
     }
 }
