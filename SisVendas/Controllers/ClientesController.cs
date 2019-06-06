@@ -6,25 +6,34 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
+using SisVendas.Models.ViewModels;
+using SisVendas.Services;
 
 namespace SisVendas.Controllers
 {
     public class ClientesController : Controller
     {
-        private readonly SisVendasContext _context;
+        //Cria o realcionamento com ClienteService
 
-        public ClientesController(SisVendasContext context)
+        private readonly ClienteService _clienteService;
+
+        public ClientesController(ClienteService clienteService)
         {
-            _context = context;
+            _clienteService = clienteService;
         }
+
+
 
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clientes.ToListAsync());
+            var clilist = await _clienteService.FindAllAsync();
+            return View(clilist);
         }
 
-        // GET: Clientes/Details/5
+
+
+        // GET: Cliente/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,8 +41,9 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.IdCli == id);
+            var cliente = await _clienteService.FindByIDAsync(id.Value);
+
+
             if (cliente == null)
             {
                 return NotFound();
@@ -42,29 +52,74 @@ namespace SisVendas.Controllers
             return View(cliente);
         }
 
+
+
         // GET: Clientes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var clientes = await _clienteService.FindAllAsync();
+            ClienteFormViewModel viewModel = new ClienteFormViewModel { Clientes = clientes };
+
+            return View(viewModel);
         }
 
         // POST: Clientes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdCli,strNomeCli,DtNasc,Sexo,UF")] Cliente cliente)
+        public async Task<IActionResult> Create(Cliente cliente)
         {
+            // Se o modelo não foi validado
+
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var clientes = await _clienteService.FindAllAsync();
+                ClienteFormViewModel viewModel = new ClienteFormViewModel { Clientes = clientes };
+                return View(viewModel);
             }
+
+            await _clienteService.InsertAsync(cliente);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET: Clientes/Delete/
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _clienteService.FindByIDAsync(id.Value);
+
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
             return View(cliente);
         }
 
-        // GET: Clientes/Edit/5
+
+        // POST: Clientes/Delete/
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _clienteService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+
+        // GET: Clientes/Edit/
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,20 +127,25 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _clienteService.FindByIDAsync(id.Value);
+
+
             if (cliente == null)
             {
                 return NotFound();
             }
-            return View(cliente);
+
+            var clientes = await _clienteService.FindAllAsync();
+            ClienteFormViewModel viewModel = new ClienteFormViewModel { Clientes = clientes };
+
+            return View(viewModel);
         }
 
-        // POST: Clientes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: Clientes/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdCli,strNomeCli,DtNasc,Sexo,UF")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, Cliente cliente)
         {
             if (id != cliente.IdCli)
             {
@@ -96,12 +156,12 @@ namespace SisVendas.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
-                    await _context.SaveChangesAsync();
+                    await _clienteService.UpdateAsync(cliente);
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.IdCli))
+                    if (id != cliente.IdCli)
                     {
                         return NotFound();
                     }
@@ -110,43 +170,15 @@ namespace SisVendas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
-        }
-
-        // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            else
             {
-                return NotFound();
+                var clientes = await _clienteService.FindAllAsync();
+                ClienteFormViewModel viewModel = new ClienteFormViewModel { Clientes = clientes };
+                return View(viewModel);
             }
-
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.IdCli == id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-
-            return View(cliente);
         }
+                     
 
-        // POST: Clientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var cliente = await _context.Clientes.FindAsync(id);
-            _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ClienteExists(int id)
-        {
-            return _context.Clientes.Any(e => e.IdCli == id);
-        }
-    }
+    }          
 }
