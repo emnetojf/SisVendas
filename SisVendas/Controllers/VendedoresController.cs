@@ -1,30 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
+using SisVendas.Models.ViewModels;
+using SisVendas.Services;
 
-namespace SisVendas.Controllers1
+namespace SisVendas.Controllers
 {
     public class VendedoresController : Controller
     {
-        private readonly SisVendasContext _context;
 
-        public VendedoresController(SisVendasContext context)
+
+        //Cria o realcionamento com ProdutoService
+
+        private readonly VendedorService _vendedorService;
+
+        public VendedoresController(VendedorService vendedorService)
         {
-            _context = context;
+            _vendedorService = vendedorService;
         }
+
+
 
         // GET: Vendedores
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Vendedor.ToListAsync());
+            var vendlist = await _vendedorService.FindAllAsync();
+            return View(vendlist);
         }
 
-        // GET: Vendedores/Details/5
+
+
+        // GET: Vendedor/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,8 +40,9 @@ namespace SisVendas.Controllers1
                 return NotFound();
             }
 
-            var vendedor = await _context.Vendedor
-                .FirstOrDefaultAsync(m => m.IdVend == id);
+            var vendedor = await _vendedorService.FindByIDAsync(id.Value);
+
+
             if (vendedor == null)
             {
                 return NotFound();
@@ -42,29 +51,73 @@ namespace SisVendas.Controllers1
             return View(vendedor);
         }
 
+
+
         // GET: Vendedores/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var vendedores = await _vendedorService.FindAllAsync();
+            var vwModel = new VendedorFormViewModel { Vendedores = vendedores };
+            return View(vwModel);
         }
 
         // POST: Vendedores/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdVend,StrNomeVend,strEmail,douSalBase")] Vendedor vendedor)
+        public async Task<IActionResult> Create(Vendedor vendedor)
         {
-            if (ModelState.IsValid)
+            // Se o modelo não foi validado
+
+            if (!ModelState.IsValid)
             {
-                _context.Add(vendedor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var vendedores = await _vendedorService.FindAllAsync();
+                VendedorFormViewModel vwModel = new VendedorFormViewModel { Vendedores = vendedores };
+                return View(vwModel);
             }
+
+            await _vendedorService.InsertAsync(vendedor);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET: Vendedores/Delete/
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vendedor = await _vendedorService.FindByIDAsync(id.Value);
+
+            if (vendedor == null)
+            {
+                return NotFound();
+            }
+
             return View(vendedor);
         }
 
-        // GET: Vendedores/Edit/5
+
+        // POST: Vendedores/Delete/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _vendedorService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+
+        // GET: Vendedores/Edit/
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,20 +125,23 @@ namespace SisVendas.Controllers1
                 return NotFound();
             }
 
-            var vendedor = await _context.Vendedor.FindAsync(id);
+            var vendedor = await _vendedorService.FindByIDAsync(id.Value);
+
+
             if (vendedor == null)
             {
                 return NotFound();
             }
-            return View(vendedor);
+
+            VendedorFormViewModel vwModel = new VendedorFormViewModel { Vendedor = vendedor};
+            return View(vwModel);
         }
 
-        // POST: Vendedores/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: Vendedores/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdVend,StrNomeVend,strEmail,douSalBase")] Vendedor vendedor)
+        public async Task<IActionResult> Edit(int id, Vendedor vendedor)
         {
             if (id != vendedor.IdVend)
             {
@@ -96,12 +152,12 @@ namespace SisVendas.Controllers1
             {
                 try
                 {
-                    _context.Update(vendedor);
-                    await _context.SaveChangesAsync();
+                    await _vendedorService.UpdateAsync(vendedor);
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VendedorExists(vendedor.IdVend))
+                    if (id != vendedor.IdVend)
                     {
                         return NotFound();
                     }
@@ -110,43 +166,16 @@ namespace SisVendas.Controllers1
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(vendedor);
-        }
-
-        // GET: Vendedores/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            else
             {
-                return NotFound();
+                var vendedores = await _vendedorService.FindAllAsync();
+                VendedorFormViewModel vwModel = new VendedorFormViewModel { Vendedores = vendedores};
+                return View(vwModel);
             }
-
-            var vendedor = await _context.Vendedor
-                .FirstOrDefaultAsync(m => m.IdVend == id);
-            if (vendedor == null)
-            {
-                return NotFound();
-            }
-
-            return View(vendedor);
         }
 
-        // POST: Vendedores/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var vendedor = await _context.Vendedor.FindAsync(id);
-            _context.Vendedor.Remove(vendedor);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool VendedorExists(int id)
-        {
-            return _context.Vendedor.Any(e => e.IdVend == id);
-        }
+
     }
 }

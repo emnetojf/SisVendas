@@ -44,7 +44,7 @@ namespace SisVendas
             
             services.AddScoped<ClienteService>();
             services.AddScoped<ProdutoService>();
-
+            services.AddScoped<VendedorService>();
 
 
         }

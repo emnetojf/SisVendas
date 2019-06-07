@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SisVendas.Models
 {
@@ -13,10 +8,12 @@ namespace SisVendas.Models
         public int IdVend { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
-        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {}!")]
+        [Display(Name = "Vendedor")]
+        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {1}!")]
         public string StrNomeVend { get; set; }
 
         [Required(ErrorMessage = "{0} required")]
+        [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Entre com email válido")]
         [DataType(DataType.EmailAddress)]
         public string strEmail { get; set; }

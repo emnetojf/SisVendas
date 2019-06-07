@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<SisVendas.Models.Vendedor>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vendedores";
 }
 
-<h2>Index</h2>
+<h4>@ViewData["Title"]</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Cadastrar</a>
 </p>
 <table class="table">
     <thead>
@@ -37,9 +37,9 @@
                 @Html.DisplayFor(modelItem => item.douSalBase)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdVend">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdVend">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdVend">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdVend">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdVend">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdVend">Deletar</a>
             </td>
         </tr>
 }
