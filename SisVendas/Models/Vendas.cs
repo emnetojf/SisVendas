@@ -16,7 +16,7 @@ namespace SisVendas.Models
         public int ClienteId { get; set; }
 
         public FormaPagto Pagto { get; set; }
-        public int PagtoId { get; set; }
+        public int FormaPagtoId { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Data Venda")]

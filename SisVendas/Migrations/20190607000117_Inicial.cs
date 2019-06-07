@@ -16,8 +16,8 @@ namespace SisVendas.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     strNomeCli = table.Column<string>(maxLength: 60, nullable: false),
                     DtNasc = table.Column<DateTime>(nullable: false),
-                    Sexo = table.Column<int>(nullable: false),
-                    UF = table.Column<int>(nullable: false)
+                    SexoId = table.Column<int>(nullable: false),
+                    UFId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,20 +70,13 @@ namespace SisVendas.Migrations
                 {
                     IdVend = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    strNomeVend = table.Column<string>(maxLength: 60, nullable: false),
+                    StrNomeVend = table.Column<string>(maxLength: 60, nullable: false),
                     strEmail = table.Column<string>(nullable: false),
-                    douSalBase = table.Column<double>(nullable: false),
-                    DeptoId = table.Column<int>(nullable: false)
+                    douSalBase = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vendedor", x => x.IdVend);
-                    table.ForeignKey(
-                        name: "FK_Vendedor_Departamentos_DeptoId",
-                        column: x => x.DeptoId,
-                        principalTable: "Departamentos",
-                        principalColumn: "IdDepto",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,7 +87,7 @@ namespace SisVendas.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     VendedorId = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
-                    PagtoId = table.Column<int>(nullable: false),
+                    FormaPagtoId = table.Column<int>(nullable: false),
                     dtVenda = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false)
                 },
@@ -108,8 +101,8 @@ namespace SisVendas.Migrations
                         principalColumn: "IdCli",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Vendas_FormaPagtos_PagtoId",
-                        column: x => x.PagtoId,
+                        name: "FK_Vendas_FormaPagtos_FormaPagtoId",
+                        column: x => x.FormaPagtoId,
                         principalTable: "FormaPagtos",
                         principalColumn: "IdPagto",
                         onDelete: ReferentialAction.Cascade);
@@ -128,7 +121,7 @@ namespace SisVendas.Migrations
                     ItemVendasID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     VendasId = table.Column<int>(nullable: false),
-                    ProdId = table.Column<int>(nullable: true),
+                    ProdutoId = table.Column<int>(nullable: false),
                     intQuant = table.Column<int>(nullable: false),
                     douValor = table.Column<double>(nullable: false)
                 },
@@ -136,11 +129,11 @@ namespace SisVendas.Migrations
                 {
                     table.PrimaryKey("PK_ItemVendas", x => x.ItemVendasID);
                     table.ForeignKey(
-                        name: "FK_ItemVendas_Produtos_ProdId",
-                        column: x => x.ProdId,
+                        name: "FK_ItemVendas_Produtos_ProdutoId",
+                        column: x => x.ProdutoId,
                         principalTable: "Produtos",
                         principalColumn: "IdProd",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ItemVendas_Vendas_VendasId",
                         column: x => x.VendasId,
@@ -150,9 +143,9 @@ namespace SisVendas.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemVendas_ProdId",
+                name: "IX_ItemVendas_ProdutoId",
                 table: "ItemVendas",
-                column: "ProdId");
+                column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemVendas_VendasId",
@@ -165,23 +158,21 @@ namespace SisVendas.Migrations
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vendas_PagtoId",
+                name: "IX_Vendas_FormaPagtoId",
                 table: "Vendas",
-                column: "PagtoId");
+                column: "FormaPagtoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vendas_VendedorId",
                 table: "Vendas",
                 column: "VendedorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Vendedor_DeptoId",
-                table: "Vendedor",
-                column: "DeptoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Departamentos");
+
             migrationBuilder.DropTable(
                 name: "ItemVendas");
 
@@ -199,9 +190,6 @@ namespace SisVendas.Migrations
 
             migrationBuilder.DropTable(
                 name: "Vendedor");
-
-            migrationBuilder.DropTable(
-                name: "Departamentos");
         }
     }
 }

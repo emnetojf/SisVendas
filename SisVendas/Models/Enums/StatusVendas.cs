@@ -2,8 +2,8 @@
 {
     public enum StatusVendas
     {
-        Cancelado,
-        Faturado,
-        Pendente
+        Cancelado = 1,
+        Faturado = 2,
+        Pendente = 3
     }
 }

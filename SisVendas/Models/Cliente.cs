@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using SisVendas.Models.Enums;
 
 namespace SisVendas.Models
@@ -12,7 +10,7 @@ namespace SisVendas.Models
         public int IdCli { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
-        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {}!")]
+        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {1}!")]
         public string strNomeCli { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
@@ -22,7 +20,11 @@ namespace SisVendas.Models
         public DateTime DtNasc { get; set; }
 
         public Sexo Sexo { get; set; }
-        public UF UF { get; set; }
+        public int SexoId { get; set; }
+
+        public UF Uf { get; set; }
+        public int UFId { get; set; }
+        
 
 
         public Cliente()
@@ -34,9 +36,7 @@ namespace SisVendas.Models
             this.strNomeCli = strNomeCli;
             DtNasc = dtNasc;
             Sexo = sexo;
-            UF = uf;
+            Uf = uf;
         }
-
-      
     }
 }

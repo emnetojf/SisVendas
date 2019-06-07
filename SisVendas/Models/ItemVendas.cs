@@ -11,7 +11,7 @@ namespace SisVendas.Models
         public int VendasId { get; set; }
 
         public Produto Produto { get; set; }
-        public int ProdId { get; set; }
+        public int ProdutoId { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Quantidade!")]
@@ -29,9 +29,9 @@ namespace SisVendas.Models
 
         public ItemVendas(int itemVendasID, Vendas vendas, Produto produto, int intQuant, double douValor)
         {
-            this.ItemVendasID = itemVendasID;
-            this.Vendas = vendas;
-            this.Produto= produto;
+            ItemVendasID = itemVendasID;
+            Vendas = vendas;
+            Produto= produto;
             this.intQuant = intQuant;
             this.douValor = douValor;
         }

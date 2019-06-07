@@ -1,46 +1,45 @@
-﻿@model SisVendas.Models.Cliente
+﻿@model SisVendas.Models.ViewModels.ClienteFormViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Cliente?";
 }
 
-<h2>Create</h2>
 
-<h4>Cliente</h4>
+<h4>@ViewData["Title"]</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="strNomeCli" class="control-label"></label>
-                <input asp-for="strNomeCli" class="form-control" />
-                <span asp-validation-for="strNomeCli" class="text-danger"></span>
+                <label asp-for="Cliente.strNomeCli" class="control-label"></label>
+                <input asp-for="Cliente.strNomeCli" class="form-control" />
+                <span asp-validation-for="Cliente.strNomeCli" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DtNasc" class="control-label"></label>
-                <input asp-for="DtNasc" class="form-control" />
-                <span asp-validation-for="DtNasc" class="text-danger"></span>
+                <label asp-for="Cliente.DtNasc" class="control-label"></label>
+                <input asp-for="Cliente.DtNasc" class="form-control" />
+                <span asp-validation-for="Cliente.DtNasc" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sexo" class="control-label"></label>
-                <select asp-for="Sexo" class="form-control"></select>
-                <span asp-validation-for="Sexo" class="text-danger"></span>
+                <label asp-for="Cliente.SexoId" class="control-label"></label>
+                <select asp-for="Cliente.SexoId" asp-items="@(new SelectList(Model.Clientes,"Id", "Nome"))" class="form-control"></select>
             </div>
             <div class="form-group">
-                <label asp-for="UF" class="control-label"></label>
-                <select asp-for="UF" class="form-control"></select>
-                <span asp-validation-for="UF" class="text-danger"></span>
+                <label asp-for="Cliente.UFId" class="control-label"></label>
+                <select asp-for="Cliente.UFId" asp-items="@(new SelectList(Model.Clientes,"Id", "Nome"))" class="form-control"></select>
+                
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Salvar" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retorna Lista</a>
 </div>
 
 @section Scripts {

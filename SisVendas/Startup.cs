@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
+using SisVendas.Services;
 
 namespace SisVendas
 {
@@ -40,7 +41,9 @@ namespace SisVendas
                     options.UseSqlServer(Configuration.GetConnectionString("SisVendasContext"), builder =>
                         builder.MigrationsAssembly("SisVendas")));
 
-
+            
+            services.AddScoped<ClienteService>();
+            services.AddScoped<ProdutoService>();
 
 
 

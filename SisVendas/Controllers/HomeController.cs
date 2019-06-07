@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SisVendas.Models;
 
-namespace SisVendas.Controllers
+namespace SisVendas.Controllers1
 {
     public class HomeController : Controller
     {

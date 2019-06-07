@@ -6,25 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
+using SisVendas.Models.ViewModels;
+using SisVendas.Services;
 
 namespace SisVendas.Controllers
 {
     public class ProdutosController : Controller
     {
-        private readonly SisVendasContext _context;
 
-        public ProdutosController(SisVendasContext context)
+        //Cria o realcionamento com ProdutoService
+
+        private readonly ProdutoService _produtoService;
+
+        public ProdutosController(ProdutoService produtoService)
         {
-            _context = context;
+            _produtoService = produtoService;
         }
+
+
 
         // GET: Produtos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Produtos.ToListAsync());
+            var prodlist = await _produtoService.FindAllAsync();
+            return View(prodlist);
         }
 
-        // GET: Produtos/Details/5
+
+
+        // GET: Produto/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,8 +42,9 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var produto = await _context.Produtos
-                .FirstOrDefaultAsync(m => m.IdProd == id);
+            var produto = await _produtoService.FindByIDAsync(id.Value);
+
+
             if (produto == null)
             {
                 return NotFound();
@@ -42,29 +53,79 @@ namespace SisVendas.Controllers
             return View(produto);
         }
 
-        // GET: Produtos/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: Produtos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdProd,strNomeProd,douPreco")] Produto produto)
+
+        // GET: Produtos/Create
+        public async Task<IActionResult> Create()
         {
             if (ModelState.IsValid)
             {
-                _context.Add(produto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View();
+
             }
+
+            var produtos = await _produtoService.FindAllAsync();
+            var vwModel = new ProdutoFormViewModel { Produtos = produtos };
+            return View(vwModel);
+        }
+
+        // POST: Produtos/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Produto produto)
+        {
+            // Se o modelo não foi validado
+
+            if (!ModelState.IsValid)
+            {
+                var produtos = await _produtoService.FindAllAsync();
+                ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos};
+                return View(vwModel);
+            }
+
+            await _produtoService.InsertAsync(produto);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET: Produtos/Delete/
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var produto = await _produtoService.FindByIDAsync(id.Value);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
             return View(produto);
         }
 
-        // GET: Produtos/Edit/5
+
+        // POST: Produtos/Delete/
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _produtoService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+
+        // GET: Produtos/Edit/
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,20 +133,25 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var produto = await _context.Produtos.FindAsync(id);
+            var produto = await _produtoService.FindByIDAsync(id.Value);
+
+
             if (produto == null)
             {
                 return NotFound();
             }
-            return View(produto);
+
+            var produtos = await _produtoService.FindAllAsync();
+            ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos};
+
+            return View(vwModel);
         }
 
-        // POST: Produtos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: Clientes/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdProd,strNomeProd,douPreco")] Produto produto)
+        public async Task<IActionResult> Edit(int id, Produto produto)
         {
             if (id != produto.IdProd)
             {
@@ -96,12 +162,12 @@ namespace SisVendas.Controllers
             {
                 try
                 {
-                    _context.Update(produto);
-                    await _context.SaveChangesAsync();
+                    await _produtoService.UpdateAsync(produto);
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProdutoExists(produto.IdProd))
+                    if (id != produto.IdProd)
                     {
                         return NotFound();
                     }
@@ -110,43 +176,15 @@ namespace SisVendas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(produto);
-        }
-
-        // GET: Produtos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            else
             {
-                return NotFound();
+                var produtos = await _produtoService.FindAllAsync();
+                ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos };
+                return View(vwModel);
             }
-
-            var produto = await _context.Produtos
-                .FirstOrDefaultAsync(m => m.IdProd == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return View(produto);
         }
 
-        // POST: Produtos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var produto = await _context.Produtos.FindAsync(id);
-            _context.Produtos.Remove(produto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool ProdutoExists(int id)
-        {
-            return _context.Produtos.Any(e => e.IdProd == id);
-        }
     }
 }
