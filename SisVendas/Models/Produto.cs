@@ -8,11 +8,12 @@ namespace SisVendas.Models
         public int IdProd { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
-        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {}!")]
+        [Display(Name = "ID")]
+        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {1}!")]
         public string strNomeProd { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
-        [Display(Name = "Preço do produto!")]
+        [Display(Name = "Preço do produto")]
         [DisplayFormat(DataFormatString = "{0:F2}")] // Formato 0.00
         public double douPreco { get; set; }
 

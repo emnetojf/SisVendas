@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<SisVendas.Models.Produto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Produtos";
 }
 
-<h2>Index</h2>
+<h4>@ViewData["Title"]</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Cria Produto</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.strNomeProd)
+                @Html.DisplayName("Produto")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.douPreco)
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.douPreco)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdProd">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdProd">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdProd">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdProd">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdProd">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdProd">Deletar</a>
             </td>
         </tr>
 }

@@ -58,12 +58,6 @@ namespace SisVendas.Controllers
         // GET: Produtos/Create
         public async Task<IActionResult> Create()
         {
-            if (ModelState.IsValid)
-            {
-                return View();
-
-            }
-
             var produtos = await _produtoService.FindAllAsync();
             var vwModel = new ProdutoFormViewModel { Produtos = produtos };
             return View(vwModel);
@@ -108,7 +102,7 @@ namespace SisVendas.Controllers
 
 
         // POST: Produtos/Delete/
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
@@ -141,9 +135,7 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var produtos = await _produtoService.FindAllAsync();
-            ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos};
-
+            ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produto = produto };
             return View(vwModel);
         }
 
