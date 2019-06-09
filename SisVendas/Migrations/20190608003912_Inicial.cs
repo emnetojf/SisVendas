@@ -16,8 +16,8 @@ namespace SisVendas.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     strNomeCli = table.Column<string>(maxLength: 60, nullable: false),
                     DtNasc = table.Column<DateTime>(nullable: false),
-                    SexoId = table.Column<int>(nullable: false),
-                    UFId = table.Column<int>(nullable: false)
+                    Sexo = table.Column<int>(nullable: false),
+                    UF = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

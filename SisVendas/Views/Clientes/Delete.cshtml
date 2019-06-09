@@ -1,18 +1,18 @@
 ﻿@model SisVendas.Models.Cliente
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Deletar Cliente";
 }
 
-<h2>Delete</h2>
+<h2>@ViewData["Title"]</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+
 <div>
-    <h4>Cliente</h4>
+    
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.strNomeCli)
+            @Html.DisplayName("Cliente")
         </dt>
         <dd>
             @Html.DisplayFor(model => model.strNomeCli)
@@ -30,16 +30,16 @@
             @Html.DisplayFor(model => model.Sexo)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Uf)
+            @Html.DisplayNameFor(model => model.UF)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Uf)
+            @Html.DisplayFor(model => model.UF)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="IdCli" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Deletar" class="btn btn-default" /> |
+        <a asp-action="Index">Retornar Lista</a>
     </form>
 </div>

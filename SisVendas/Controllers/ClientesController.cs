@@ -57,12 +57,6 @@ namespace SisVendas.Controllers
         // GET: Clientes/Create
         public async Task<IActionResult> Create()
         {
-            if (ModelState.IsValid)
-            {
-                return View();
-                                
-            }
-
             var clientes = await _clienteService.FindAllAsync();
             var vwModel = new ClienteFormViewModel { Clientes = clientes };
             return View(vwModel);
@@ -140,9 +134,8 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var clientes = await _clienteService.FindAllAsync();
-            ClienteFormViewModel viewModel = new ClienteFormViewModel { Clientes = clientes };
-
+          
+            ClienteFormViewModel viewModel = new ClienteFormViewModel { Cliente = cliente };
             return View(viewModel);
         }
 

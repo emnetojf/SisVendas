@@ -20,23 +20,20 @@ namespace SisVendas.Models
         public DateTime DtNasc { get; set; }
 
         public Sexo Sexo { get; set; }
-        public int SexoId { get; set; }
-
-        public UF Uf { get; set; }
-        public int UFId { get; set; }
+        public UF UF { get; set; }
         
 
 
         public Cliente()
         { }
 
-        public Cliente(int idCli, string strNomeCli, DateTime dtNasc, Sexo sexo, UF uf)
+        public Cliente(int idCli, string strNomeCli, DateTime dtNasc, Sexo sexo, UF uF)
         {
             IdCli = idCli;
             this.strNomeCli = strNomeCli;
             DtNasc = dtNasc;
             Sexo = sexo;
-            Uf = uf;
+            UF = uF;
         }
     }
 }

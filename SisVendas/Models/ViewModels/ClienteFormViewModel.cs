@@ -1,5 +1,5 @@
-﻿using SisVendas.Models.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SisVendas.Models.Enums;
 
 namespace SisVendas.Models.ViewModels
 {
@@ -7,7 +7,8 @@ namespace SisVendas.Models.ViewModels
     {
         public Cliente Cliente { get; set; }
         public ICollection<Cliente> Clientes { get; set; }
-        public ICollection<Sexo> Sexo { get; set; }
-        public ICollection<UF> UFs { get; set; }
+
+        public Sexo Sexo { get; set; }
+        public UF UF { get; set; }
     }
 }

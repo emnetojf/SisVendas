@@ -10,7 +10,7 @@ using SisVendas.Models;
 namespace SisVendas.Migrations
 {
     [DbContext(typeof(SisVendasContext))]
-    [Migration("20190607000117_Inicial")]
+    [Migration("20190608003912_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,11 +31,7 @@ namespace SisVendas.Migrations
 
                     b.Property<int>("Sexo");
 
-                    b.Property<int>("SexoId");
-
-                    b.Property<int>("UFId");
-
-                    b.Property<int>("Uf");
+                    b.Property<int>("UF");
 
                     b.Property<string>("strNomeCli")
                         .IsRequired()

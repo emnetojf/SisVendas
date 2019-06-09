@@ -1,7 +1,7 @@
 ﻿@model SisVendas.Models.FormaPagto
 
 @{
-    ViewData["Title"] = "Editar Forma Pagto?";
+    ViewData["Title"] = "Editar Forma Pagto";
 }
 
 <h4>@ViewData["Title"]</h4>
@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-for="IdPagto" />
             <div class="form-group">
                 <label asp-for="strPagto" class="control-label">Nome Forma Pagto</label>

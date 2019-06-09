@@ -29,11 +29,7 @@ namespace SisVendas.Migrations
 
                     b.Property<int>("Sexo");
 
-                    b.Property<int>("SexoId");
-
-                    b.Property<int>("UFId");
-
-                    b.Property<int>("Uf");
+                    b.Property<int>("UF");
 
                     b.Property<string>("strNomeCli")
                         .IsRequired()

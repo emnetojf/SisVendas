@@ -1,17 +1,17 @@
 ﻿@model SisVendas.Models.Cliente
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes Clientes";
 }
 
-<h2>Details</h2>
+<h2>@ViewData["Title"]</h2>
 
 <div>
-    <h4>Cliente</h4>
+ 
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.strNomeCli)
+            @Html.DisplayName("Cliente")
         </dt>
         <dd>
             @Html.DisplayFor(model => model.strNomeCli)
@@ -29,14 +29,14 @@
             @Html.DisplayFor(model => model.Sexo)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Uf)
+            @Html.DisplayNameFor(model => model.UF)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Uf)
+            @Html.DisplayFor(model => model.UF)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IdCli">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.IdCli">Editar</a> |
+    <a asp-action="Index">Retornar Lista</a>
 </div>

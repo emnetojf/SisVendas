@@ -1,47 +1,53 @@
-﻿@model SisVendas.Models.Cliente
+﻿@model SisVendas.Models.ViewModels.ClienteFormViewModel
+@using  SisVendas.Models.Enums
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Cliente";
 }
 
-<h2>Edit</h2>
+<h2>@ViewData["Title"]</h2>
 
-<h4>Cliente</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdCli" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="Cliente.IdCli" />
+
             <div class="form-group">
-                <label asp-for="strNomeCli" class="control-label"></label>
-                <input asp-for="strNomeCli" class="form-control" />
-                <span asp-validation-for="strNomeCli" class="text-danger"></span>
+                <label asp-for="Cliente.strNomeCli" class="control-label">Cliente</label>
+                <input asp-for="Cliente.strNomeCli" class="form-control" />
+                <span asp-validation-for="Cliente.strNomeCli" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="DtNasc" class="control-label"></label>
-                <input asp-for="DtNasc" class="form-control" />
-                <span asp-validation-for="DtNasc" class="text-danger"></span>
+                <label asp-for="Cliente.DtNasc" class="control-label">Data Nasc.</label>
+                <input asp-for="Cliente.DtNasc" class="form-control" />
+                <span asp-validation-for="Cliente.DtNasc" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Sexo" class="control-label"></label>
-                <select asp-for="Sexo" class="form-control"></select>
-                <span asp-validation-for="Sexo" class="text-danger"></span>
+                <label asp-for="Cliente.Sexo" class="control-label">Sexo</label>
+                <select asp-for="Cliente.Sexo" asp-items="Html.GetEnumSelectList<Sexo>()" class="form-control"></select>
+                <span asp-validation-for="Cliente.Sexo" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Uf" class="control-label"></label>
-                <select asp-for="Uf" class="form-control"></select>
-                <span asp-validation-for="Uf" class="text-danger"></span>
+                <label asp-for="Cliente.UF" class="control-label">UF</label>
+                <select asp-for="Cliente.UF" asp-items="Html.GetEnumSelectList<UF>()" class="form-control"></select>
+                <span asp-validation-for="Cliente.UF" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Salvar" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retornar Lista</a>
 </div>
 
 @section Scripts {

@@ -1,45 +1,50 @@
 ﻿@model SisVendas.Models.ViewModels.ClienteFormViewModel
+@using  SisVendas.Models.Enums
 
 @{
-    ViewData["Title"] = "Criar Cliente?";
+    ViewData["Title"] = "Cadastrar Cliente";
 }
 
-
-<h4>@ViewData["Title"]</h4>
+<h2>@ViewData["Title"]</h2>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Cliente.strNomeCli" class="control-label"></label>
+                <label asp-for="Cliente.strNomeCli" class="control-label">Cliente</label>
                 <input asp-for="Cliente.strNomeCli" class="form-control" />
                 <span asp-validation-for="Cliente.strNomeCli" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cliente.DtNasc" class="control-label"></label>
+                <label asp-for="Cliente.DtNasc" class="control-label">Data Nasc.</label>
                 <input asp-for="Cliente.DtNasc" class="form-control" />
                 <span asp-validation-for="Cliente.DtNasc" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cliente.SexoId" class="control-label"></label>
-                <select asp-for="Cliente.SexoId" asp-items="@(new SelectList(Model.Clientes,"Id", "Nome"))" class="form-control"></select>
+                <label asp-for="Cliente.Sexo" class="control-label">Sexo</label>
+                <select asp-for="Cliente.Sexo" asp-items="Html.GetEnumSelectList<Sexo>()" class="form-control">
+                    <option>Sexo</option>
+                </select>
+                <span asp-validation-for="Cliente.Sexo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cliente.UFId" class="control-label"></label>
-                <select asp-for="Cliente.UFId" asp-items="@(new SelectList(Model.Clientes,"Id", "Nome"))" class="form-control"></select>
-                
+                <label asp-for="Cliente.UF" class="control-label">UF</label>
+                <select asp-for="Cliente.UF" asp-items="Html.GetEnumSelectList<UF>()" class="form-control">
+                    <option>UF</option>
+                </select>
+                <span asp-validation-for="Cliente.UF" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-default" />
+                <input type="submit" value="Cadastrar" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Retorna Lista</a>
+    <a asp-action="Index">Retornar Lista</a>
 </div>
 
 @section Scripts {
