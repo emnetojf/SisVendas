@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SisVendas.Models.Enums;
 
@@ -18,6 +19,8 @@ namespace SisVendas.Models
         public FormaPagto Pagto { get; set; }
         public int FormaPagtoId { get; set; }
 
+        public ICollection<ItemVendas> ItemVendas { get; set; }
+
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Data Venda")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
@@ -25,6 +28,8 @@ namespace SisVendas.Models
         public DateTime dtVenda { get; set; }
 
         public StatusVendas Status { get; set; }
+
+        
 
         public Vendas()
         {}
