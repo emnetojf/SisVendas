@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SisVendas.Models
 {
@@ -24,8 +25,8 @@ namespace SisVendas.Models
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double douSalBase { get; set; }
 
-      
 
+        public ICollection<Vendas> Vendas { get; set; } = new List<Vendas>();
 
         public Vendedor()
         { }

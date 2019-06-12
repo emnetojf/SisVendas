@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
 using SisVendas.Models.ViewModels;
@@ -16,10 +14,19 @@ namespace SisVendas.Controllers
         //Cria o realcionamento com ProdutoService
 
         private readonly VendasService _vendasService;
+        private readonly ClienteService _clienteService;
+        private readonly VendedorService _vendedorService;
+        private readonly FormaPagtoService _formaPagtoService;
 
-        public VendasController(VendasService vendasService)
+
+
+
+        public VendasController(VendasService vendasService, ClienteService clienteService, VendedorService vendedorService, FormaPagtoService formaPagtoService)
         {
             _vendasService = vendasService;
+            _clienteService = clienteService;
+            _vendedorService = vendedorService;
+            _formaPagtoService = formaPagtoService;
         }
 
 
@@ -57,25 +64,37 @@ namespace SisVendas.Controllers
         public async Task<IActionResult> Create()
         {
             var vendas = await _vendasService.FindAllAsync();
-            var vwModel = new VendasFormViewModel { Vendas = vendas};
+            var clientes = await _clienteService.FindAllAsync();
+            var vendedores = await _vendedorService.FindAllAsync();
+            var formaPagtos   = await _formaPagtoService.FindAllAsync();
+
+            var vwModel = new VendasFormViewModel { Vendas = vendas, Vendedores = vendedores, Clientes = clientes, FormaPagtos = formaPagtos };
             return View(vwModel);
 
         }
-
-
-                     
+                                    
 
         // POST: Vendas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Vendas vendas)
+        public async Task<IActionResult> Create(Vendas venda)
         {
-            var vendaslist = await _vendasService.FindAllAsync();
-            return View(vendaslist);
+            // Se o modelo não foi validado
 
+            if (!ModelState.IsValid)
+            {
+                var vendas = await _vendasService.FindAllAsync();
+                VendasFormViewModel viewModel = new VendasFormViewModel { Vendas = vendas };
+                return View(viewModel);
+            }
+
+            await _vendasService.InsertAsync(venda);
+            return RedirectToAction(nameof(Index));
         }
+
+
 
         // GET: Vendas/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -85,17 +104,18 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            var vendas = await _vendasService.FindByIDAsync(id.Value);
-            
-           
-            if (vendas == null)
+            var venda = await _vendasService.FindByIDAsync(id.Value);
+
+            var clientes = await _clienteService.FindAllAsync();
+            var vendedores = await _vendedorService.FindAllAsync();
+            var formaPagtos = await _formaPagtoService.FindAllAsync();
+
+            if (venda == null)
             {
                 return NotFound();
             }
 
-           
-
-            VendasFormViewModel vwModel = new VendasFormViewModel { Venda = vendas};
+            VendasFormViewModel vwModel = new VendasFormViewModel { Venda = venda, Vendedores = vendedores, Clientes = clientes, FormaPagtos = formaPagtos };
             return View(vwModel);
            
         }
@@ -105,29 +125,32 @@ namespace SisVendas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Vendas vendas, ItemVendas itemVendas)
+        public async Task<IActionResult> Edit(int id, Vendas vendas)
         {
+            
             if (id != vendas.IdVenda)
             {
                 return NotFound();
             }
 
+            /*
+            , ItemVendas itemVendas
             if (id != itemVendas.VendasId)
             {
                 return NotFound();
             }
-
+            */
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _vendasService.UpdateAsync(vendas, itemVendas);
+                    await _vendasService.UpdateAsync(vendas);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (id != vendas.IdVenda || id != itemVendas.VendasId)
+                    if (id != vendas.IdVenda) //|| id != itemVendas.VendasId
                     {
                         return NotFound();
                     }
@@ -135,7 +158,6 @@ namespace SisVendas.Controllers
                     {
                         throw;
                     }
-
                 }
             }
             else
@@ -145,6 +167,8 @@ namespace SisVendas.Controllers
                 return View(vwModel);
             }
         }
+
+
 
         // GET: Vendas/Delete/5
         public async Task<IActionResult> Delete(int? id)

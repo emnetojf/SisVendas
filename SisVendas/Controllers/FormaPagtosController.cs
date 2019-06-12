@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
+using SisVendas.Models.ViewModels;
+using SisVendas.Services;
 
 namespace SisVendas.Controllers1
 {
@@ -13,17 +15,18 @@ namespace SisVendas.Controllers1
     {
         
 
-        private readonly SisVendasContext _context;
+        private readonly FormaPagtoService _formaPagtoService;
 
-        public FormaPagtosController(SisVendasContext context)
+        public FormaPagtosController(FormaPagtoService formaPagtoService)
         {
-            _context = context;
+            _formaPagtoService = formaPagtoService;
         }
 
         // GET: FormaPagtos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FormaPagtos.ToListAsync());
+            var pagtolist = await _formaPagtoService.FindAllAsync();
+            return View(pagtolist);
         }
 
         // GET: FormaPagtos/Details/5
@@ -34,8 +37,9 @@ namespace SisVendas.Controllers1
                 return NotFound();
             }
 
-            var formaPagto = await _context.FormaPagtos
-                .FirstOrDefaultAsync(m => m.IdPagto == id);
+            var formaPagto = await _formaPagtoService.FindByIDAsync(id.Value);
+
+
             if (formaPagto == null)
             {
                 return NotFound();
@@ -45,9 +49,11 @@ namespace SisVendas.Controllers1
         }
 
         // GET: FormaPagtos/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var formaPagtos = await _formaPagtoService.FindAllAsync();
+            var vwModel = new FormaPagtoFormViewModel { formaPagtos = formaPagtos};
+            return View(vwModel);
         }
 
         // POST: FormaPagtos/Create
@@ -55,18 +61,60 @@ namespace SisVendas.Controllers1
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdPagto,strPagto")] FormaPagto formaPagto)
+        public async Task<IActionResult> Create(FormaPagto formaPagto)
         {
-            if (ModelState.IsValid)
+            // Se o modelo não foi validado
+
+            if (!ModelState.IsValid)
             {
-                _context.Add(formaPagto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var formaPagtos = await _formaPagtoService.FindAllAsync();
+                FormaPagtoFormViewModel viewModel = new FormaPagtoFormViewModel { formaPagtos = formaPagtos};
+                return View(viewModel);
             }
+
+            await _formaPagtoService.InsertAsync(formaPagto);
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        // GET: FormaPagtos/Delete/
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var formaPagto = await _formaPagtoService.FindByIDAsync(id.Value);
+
+            if (formaPagto == null)
+            {
+                return NotFound();
+            }
+
             return View(formaPagto);
         }
 
-        // GET: FormaPagtos/Edit/5
+
+        // POST: FormaPagtos/Delete/
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _formaPagtoService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+
+        // GET: FormaPagtos/Edit/
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,20 +122,24 @@ namespace SisVendas.Controllers1
                 return NotFound();
             }
 
-            var formaPagto = await _context.FormaPagtos.FindAsync(id);
+            var formaPagto = await _formaPagtoService.FindByIDAsync(id.Value);
+
+
             if (formaPagto == null)
             {
                 return NotFound();
             }
-            return View(formaPagto);
+
+
+            FormaPagtoFormViewModel viewModel = new FormaPagtoFormViewModel { FormaPagto = formaPagto };
+            return View(viewModel);
         }
 
-        // POST: FormaPagtos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: FormaPagtos/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdPagto,strPagto")] FormaPagto formaPagto)
+        public async Task<IActionResult> Edit(int id, FormaPagto formaPagto)
         {
             if (id != formaPagto.IdPagto)
             {
@@ -98,12 +150,12 @@ namespace SisVendas.Controllers1
             {
                 try
                 {
-                    _context.Update(formaPagto);
-                    await _context.SaveChangesAsync();
+                    await _formaPagtoService.UpdateAsync(formaPagto);
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FormaPagtoExists(formaPagto.IdPagto))
+                    if (id != formaPagto.IdPagto)
                     {
                         return NotFound();
                     }
@@ -112,45 +164,16 @@ namespace SisVendas.Controllers1
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(formaPagto);
-        }
-
-        // GET: FormaPagtos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            else
             {
-                return NotFound();
+                var formaPagtos = await _formaPagtoService.FindAllAsync();
+                FormaPagtoFormViewModel viewModel = new FormaPagtoFormViewModel{ formaPagtos = formaPagtos };
+                return View(viewModel);
             }
-
-            var formaPagto = await _context.FormaPagtos
-                .FirstOrDefaultAsync(m => m.IdPagto == id);
-            if (formaPagto == null)
-            {
-                return NotFound();
-            }
-
-            return View(formaPagto);
         }
 
-        // POST: FormaPagtos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var formaPagto = await _context.FormaPagtos.FindAsync(id);
-            _context.FormaPagtos.Remove(formaPagto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool FormaPagtoExists(int id)
-        {
-            return _context.FormaPagtos.Any(e => e.IdPagto == id);
-        }
 
-    
     }
 }

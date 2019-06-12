@@ -45,10 +45,11 @@ namespace SisVendas.Services
 
 
         // Insert: Vendas 
-        public async Task InsertAsync(Vendas vendas, ItemVendas itemVendas)
+        public async Task InsertAsync(Vendas vendas)
         {
             try
             {
+                //vendas.ItemVendas.Add(itemVendas);  ItemVendas itemVendas
                 _context.Add(vendas);
                 await _context.SaveChangesAsync();
             }
@@ -56,7 +57,7 @@ namespace SisVendas.Services
             {
                 throw new Exception(e.Message);
             }
-
+            /*
             try
             {
                 _context.Add(itemVendas);
@@ -66,7 +67,7 @@ namespace SisVendas.Services
             {
                 throw new Exception(e.Message);
             }
-                       
+              */         
         }
 
 
@@ -93,11 +94,15 @@ namespace SisVendas.Services
                        
             try
             {
+                
                 ItemVendas itemVendas = await _context.ItemVendas.FindAsync(id);
+                /*
                 _context.Remove(itemVendas);
                 await _context.SaveChangesAsync();
-
+                */
                 Vendas venda = await _context.Vendas.FindAsync(id);
+                venda.ItemVendas.Remove(itemVendas);
+
                 _context.Remove(venda);
                 await _context.SaveChangesAsync();
             }
@@ -109,7 +114,7 @@ namespace SisVendas.Services
 
 
         // Update: Vendas 
-        public async Task UpdateAsync(Vendas vendas, ItemVendas itemVendas)
+        public async Task UpdateAsync(Vendas vendas)
         {
             // Verifica se ID existe
             bool HasAny = await _context.Vendas.AnyAsync(vend => vend.IdVenda == vendas.IdVenda);
@@ -119,6 +124,9 @@ namespace SisVendas.Services
                 throw new Exception("Id não existe");
             }
 
+            /*
+            , ItemVendas itemVendas
+
             // Verifica se IDVendas no Item Vendas existe
             HasAny = await _context.ItemVendas.AnyAsync(item => item.VendasId == itemVendas.VendasId);
 
@@ -127,7 +135,7 @@ namespace SisVendas.Services
                 throw new Exception("Id não existe");
             }
             
-
+            /*
             try
             {
                 _context.Update(itemVendas);
@@ -137,10 +145,11 @@ namespace SisVendas.Services
             {
                 throw new Exception(e.Message);
             }
-            
+            */
 
             try
             {
+                //vendas.ItemVendas.Add(itemVendas);
                 _context.Update(vendas);
                 await _context.SaveChangesAsync();
             }

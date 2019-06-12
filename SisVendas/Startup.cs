@@ -46,7 +46,7 @@ namespace SisVendas
             services.AddScoped<ProdutoService>();
             services.AddScoped<VendedorService>();
             services.AddScoped<VendasService>();
-
+            services.AddScoped<FormaPagtoService>();
 
         }
 
