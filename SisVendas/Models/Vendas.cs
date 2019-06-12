@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SisVendas.Models.Enums;
 
@@ -9,14 +10,16 @@ namespace SisVendas.Models
         [Key]
         public int IdVenda { get; set; }
 
-        public Vendedor Vendedor { get; set; }
+        public virtual Vendedor Vendedor { get; set; }
         public int VendedorId { get; set; }
 
-        public Cliente Cliente { get; set; }
+        public virtual Cliente Cliente { get; set; }
         public int ClienteId { get; set; }
 
-        public FormaPagto Pagto { get; set; }
+        public virtual FormaPagto Pagto { get; set; }
         public int FormaPagtoId { get; set; }
+
+        public virtual ICollection<ItemVendas> ItemVendas { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Data Venda")]
@@ -25,6 +28,8 @@ namespace SisVendas.Models
         public DateTime dtVenda { get; set; }
 
         public StatusVendas Status { get; set; }
+
+        
 
         public Vendas()
         {}

@@ -7,10 +7,10 @@ namespace SisVendas.Models
         [Key]
         public int ItemVendasID { get; set; }
 
-        public Vendas Vendas { get; set; }
+        public virtual Vendas Vendas { get; set; }
         public int VendasId { get; set; }
 
-        public Produto Produto { get; set; }
+        public virtual Produto Produto { get; set; }
         public int ProdutoId { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]

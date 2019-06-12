@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SisVendas.Models.Enums;
 
@@ -21,8 +22,8 @@ namespace SisVendas.Models
 
         public Sexo Sexo { get; set; }
         public UF UF { get; set; }
-        
 
+        public ICollection<Vendas> Vendas { get; set; } = new List<Vendas>();
 
         public Cliente()
         { }

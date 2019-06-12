@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SisVendas.Models
@@ -11,6 +12,7 @@ namespace SisVendas.Models
         [Required(ErrorMessage = "{0} requerido!")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "{0} deve conter no mínimo {2} e no máximo {1}!")]
         public string strPagto { get; set; }
+
 
         public FormaPagto()
         { }
