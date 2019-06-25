@@ -5,7 +5,7 @@ namespace SisVendas.Models
     public class ItemVendas
     {
         [Key]
-        public int ItemVendasID { get; set; }
+        public int ItemID { get; set; }
 
         public virtual Vendas Vendas { get; set; }
         public int VendasId { get; set; }
@@ -16,26 +16,24 @@ namespace SisVendas.Models
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Quantidade!")]
         public int intQuant { get; set; }
-
+        
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Preço do produto!")]
         [DisplayFormat(DataFormatString = "{0:F2}")] // Formato 0.00
-        public double douValor { get; set; }
-
-       
+        public double douValor { get; set; }  
 
         public ItemVendas()
         { }
 
-        public ItemVendas(int itemVendasID, Vendas vendas, Produto produto, int intQuant, double douValor)
+        public ItemVendas(int itemID, Vendas vendas, int vendasId, Produto produto, int produtoId, int intQuant, double douValor)
         {
-            ItemVendasID = itemVendasID;
+            ItemID = itemID;
             Vendas = vendas;
-            Produto= produto;
+            VendasId = vendasId;
+            Produto = produto;
+            ProdutoId = produtoId;
             this.intQuant = intQuant;
             this.douValor = douValor;
         }
-
-        
     }
 }

@@ -10,17 +10,29 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayName("Produto")
-        </dt>
+        <dt>Produto</dt>
         <dd>
             @Html.DisplayFor(model => model.strNomeProd)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.douPreco)
-        </dt>
+        <dt>Preço Produto</dt>
         <dd>
             @Html.DisplayFor(model => model.douPreco)
+        </dd>
+        <dt>Quant. Produto</dt>
+        <dd>
+            @Html.DisplayFor(model => model.douQuant)
+        </dd>
+        <dt>Unid. Produto</dt>
+        <dd>
+            @Html.DisplayFor(model => model.strUnid)
+        </dd>
+        <dt>Depto. Produto</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Departamento.strDepto)
+        </dd>
+        <dt>Foto Produto</dt>
+        <dd>
+            <img src="@Html.DisplayFor(model => model.strFoto)" width="150" height="150" />
         </dd>
     </dl>
     

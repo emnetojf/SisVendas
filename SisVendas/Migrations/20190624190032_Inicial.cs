@@ -51,20 +51,6 @@ namespace SisVendas.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Produtos",
-                columns: table => new
-                {
-                    IdProd = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    strNomeProd = table.Column<string>(maxLength: 60, nullable: false),
-                    douPreco = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Produtos", x => x.IdProd);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Vendedor",
                 columns: table => new
                 {
@@ -80,6 +66,30 @@ namespace SisVendas.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Produtos",
+                columns: table => new
+                {
+                    IdProd = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    strNomeProd = table.Column<string>(maxLength: 60, nullable: false),
+                    douPreco = table.Column<double>(nullable: false),
+                    douQuant = table.Column<double>(nullable: false),
+                    strUnid = table.Column<string>(maxLength: 3, nullable: false),
+                    strFoto = table.Column<string>(nullable: false),
+                    DepartamentoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Produtos", x => x.IdProd);
+                    table.ForeignKey(
+                        name: "FK_Produtos_Departamentos_DepartamentoId",
+                        column: x => x.DepartamentoId,
+                        principalTable: "Departamentos",
+                        principalColumn: "IdDepto",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vendas",
                 columns: table => new
                 {
@@ -89,7 +99,8 @@ namespace SisVendas.Migrations
                     ClienteId = table.Column<int>(nullable: false),
                     FormaPagtoId = table.Column<int>(nullable: false),
                     dtVenda = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    ProdutoIdProd = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -107,6 +118,12 @@ namespace SisVendas.Migrations
                         principalColumn: "IdPagto",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Vendas_Produtos_ProdutoIdProd",
+                        column: x => x.ProdutoIdProd,
+                        principalTable: "Produtos",
+                        principalColumn: "IdProd",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Vendas_Vendedor_VendedorId",
                         column: x => x.VendedorId,
                         principalTable: "Vendedor",
@@ -118,7 +135,7 @@ namespace SisVendas.Migrations
                 name: "ItemVendas",
                 columns: table => new
                 {
-                    ItemVendasID = table.Column<int>(nullable: false)
+                    ItemID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     VendasId = table.Column<int>(nullable: false),
                     ProdutoId = table.Column<int>(nullable: false),
@@ -127,7 +144,7 @@ namespace SisVendas.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemVendas", x => x.ItemVendasID);
+                    table.PrimaryKey("PK_ItemVendas", x => x.ItemID);
                     table.ForeignKey(
                         name: "FK_ItemVendas_Produtos_ProdutoId",
                         column: x => x.ProdutoId,
@@ -153,6 +170,11 @@ namespace SisVendas.Migrations
                 column: "VendasId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Produtos_DepartamentoId",
+                table: "Produtos",
+                column: "DepartamentoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vendas_ClienteId",
                 table: "Vendas",
                 column: "ClienteId");
@@ -163,6 +185,11 @@ namespace SisVendas.Migrations
                 column: "FormaPagtoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Vendas_ProdutoIdProd",
+                table: "Vendas",
+                column: "ProdutoIdProd");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vendas_VendedorId",
                 table: "Vendas",
                 column: "VendedorId");
@@ -171,13 +198,7 @@ namespace SisVendas.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Departamentos");
-
-            migrationBuilder.DropTable(
                 name: "ItemVendas");
-
-            migrationBuilder.DropTable(
-                name: "Produtos");
 
             migrationBuilder.DropTable(
                 name: "Vendas");
@@ -189,7 +210,13 @@ namespace SisVendas.Migrations
                 name: "FormaPagtos");
 
             migrationBuilder.DropTable(
+                name: "Produtos");
+
+            migrationBuilder.DropTable(
                 name: "Vendedor");
+
+            migrationBuilder.DropTable(
+                name: "Departamentos");
         }
     }
 }

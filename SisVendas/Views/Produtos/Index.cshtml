@@ -13,12 +13,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayName("Produto")
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.douPreco)
-            </th>
+            <th>Produto</th>
+            <th>Preço Produto</th>
+            <th>Quant. Produto</th>           
             <th></th>
         </tr>
     </thead>
@@ -31,6 +28,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.douPreco)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.douQuant)
+            </td>
+            
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdProd">Editar</a> |
                 <a asp-action="Details" asp-route-id="@item.IdProd">Detalhes</a> |

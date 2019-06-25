@@ -11,7 +11,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
-            
+
             <input type="hidden" asp-for="Produto.IdProd" />
 
             <div class="form-group">
@@ -19,13 +19,69 @@
                 <input asp-for="Produto.strNomeProd" class="form-control" />
                 <span asp-validation-for="Produto.strNomeProd" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
                 <label asp-for="Produto.douPreco" class="control-label">Valor produto</label>
                 <input asp-for="Produto.douPreco" class="form-control" />
                 <span asp-validation-for="Produto.douPreco" class="text-danger"></span>
             </div>
-            
+
+            <div class="form-group">
+                <label asp-for="Produto.douQuant" class="control-label">Quant. Produto</label>
+                <input asp-for="Produto.douQuant" class="form-control" />
+                <span asp-validation-for="Produto.douQuant" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Produto.strUnid" class="control-label">Unid. Produto</label>
+                @{
+                    var vUnid = "";
+
+                    try
+                    {
+                        vUnid = ViewBag.Produto.strUnid;
+                    }
+                    catch
+                    { }
+                }
+                <select asp-for="Produto.strUnid" class="form-control">
+                    @{
+                        if (vUnid != "")
+                        {
+                            <option value="vUnid" selected>@vUnid</option>
+                        }
+                    }
+                    <option value="CX">CX</option>
+                    <option value="G">G</option>
+                    <option value="KG">KG</option>
+                    <option value="LT">LT</option>
+                    <option value="TON">TON</option>
+                    <option value="UN">UN</option>
+                </select>
+                <span asp-validation-for="Produto.strUnid" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Produto.DepartamentoId" class="control-label">Depto.</label>
+                <select asp-for="Produto.DepartamentoId" asp-items="@(new SelectList(Model.Departamentos,"IdDepto", "strDepto"))" class="form-control"> </select>
+                <span asp-validation-for="Produto.DepartamentoId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Produto.strFoto" class="control-label">Foto</label>
+                @try
+                {
+                    <img src="@Html.DisplayFor(model => model.Produto.strFoto)" width="150" height="150" />
+                }
+                catch
+                { }
+                <br /><br />
+                <input asp-for="Produto.strFoto" class="form-control" />
+                <span asp-validation-for="Produto.strFoto" class="text-danger"></span>
+            </div>
+
+
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-default" />
             </div>

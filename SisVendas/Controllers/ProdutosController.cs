@@ -17,10 +17,12 @@ namespace SisVendas.Controllers
         //Cria o realcionamento com ProdutoService
 
         private readonly ProdutoService _produtoService;
+        private readonly DepartamentoService _departamentoService;
 
-        public ProdutosController(ProdutoService produtoService)
+        public ProdutosController(ProdutoService produtoService, DepartamentoService departamentoService)
         {
             _produtoService = produtoService;
+            _departamentoService = departamentoService;
         }
 
 
@@ -58,8 +60,10 @@ namespace SisVendas.Controllers
         // GET: Produtos/Create
         public async Task<IActionResult> Create()
         {
-            var produtos = await _produtoService.FindAllAsync();
-            var vwModel = new ProdutoFormViewModel { Produtos = produtos };
+
+            var departs = await _departamentoService.FindAllAsync();
+            var vwModel = new ProdutoFormViewModel { Departamentos = departs };
+
             return View(vwModel);
         }
 
@@ -72,8 +76,10 @@ namespace SisVendas.Controllers
 
             if (!ModelState.IsValid)
             {
+                var departs = await _departamentoService.FindAllAsync();
                 var produtos = await _produtoService.FindAllAsync();
-                ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos};
+
+                ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos, Departamentos = departs };
                 return View(vwModel);
             }
 
@@ -135,7 +141,8 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produto = produto };
+            List<Departamento> departs = await _departamentoService.FindAllAsync();
+            ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produto = produto, Departamentos = departs };
             return View(vwModel);
         }
 
@@ -171,8 +178,9 @@ namespace SisVendas.Controllers
             }
             else
             {
+                var departs = await _departamentoService.FindAllAsync();
                 var produtos = await _produtoService.FindAllAsync();
-                ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos };
+                ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produtos = produtos, Departamentos = departs };
                 return View(vwModel);
             }
         }
@@ -180,3 +188,5 @@ namespace SisVendas.Controllers
 
     }
 }
+
+

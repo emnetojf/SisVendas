@@ -28,7 +28,7 @@ namespace SisVendas.Services
         // GET: Produto ID
         public async Task<Produto> FindByIDAsync(int id)
         {
-            return await _context.Produtos.FirstOrDefaultAsync(prod => prod.IdProd == id);
+            return await _context.Produtos.Include(depto => depto.Departamento).FirstOrDefaultAsync(prod => prod.IdProd == id);
         }
 
 

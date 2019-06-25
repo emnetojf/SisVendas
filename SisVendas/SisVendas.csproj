@@ -5,15 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190606205607_Inicial.cs" />
-    <Compile Remove="Migrations\20190606205607_Inicial.Designer.cs" />
-    <Compile Remove="Migrations\20190606235117_Inicial.cs" />
-    <Compile Remove="Migrations\20190606235117_Inicial.Designer.cs" />
-    <Compile Remove="Migrations\20190607000117_Inicial.cs" />
-    <Compile Remove="Migrations\20190607000117_Inicial.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="com.rusanu.dataconnectiondialog" Version="1.0.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />

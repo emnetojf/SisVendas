@@ -6,5 +6,7 @@ namespace SisVendas.Models.ViewModels
     {
         public Produto Produto { get; set; }
         public ICollection<Produto> Produtos { get; set; }
+
+        public ICollection<Departamento> Departamentos { get; set; }
     }
 }
