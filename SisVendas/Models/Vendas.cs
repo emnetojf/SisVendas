@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SisVendas.Models.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
-using SisVendas.Models.Enums;
 
 namespace SisVendas.Models
 {
@@ -17,9 +16,7 @@ namespace SisVendas.Models
         public int ClienteId { get; set; }
 
         public virtual FormaPagto Pagto { get; set; }
-        public int FormaPagtoId { get; set; }
-
-        public virtual ICollection<ItemVendas> ItemVendas { get; set; }
+        public int FormaPagtoId { get; set; }       
 
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Data Venda")]
@@ -29,7 +26,12 @@ namespace SisVendas.Models
 
         public StatusVendas Status { get; set; }
 
+        /*
+        public string ListaProdutos { get; set; }
         
+        [DisplayFormat(DataFormatString = "{0:F2}")] // Formato 0.00
+        public double TotalVend { get; set; }
+        */
 
         public Vendas()
         {}
@@ -39,9 +41,9 @@ namespace SisVendas.Models
             IdVenda = idVenda;
             Vendedor = vendedor;
             Cliente = cliente;
-            Pagto = pagto;
+            Pagto = pagto;            
             this.dtVenda = dtVenda;
             Status = status;
-        }
+        }       
     }
 }

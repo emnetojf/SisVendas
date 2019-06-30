@@ -25,8 +25,7 @@ namespace SisVendas.Services
             return await _context.Vendas
                                  .Include(v => v.Cliente)
                                  .Include(v => v.Pagto)
-                                 .Include(v => v.Vendedor)
-                                 .Include(v => v.ItemVendas)
+                                 .Include(v => v.Vendedor)                                 
                                  .ToListAsync();
         }
 
@@ -39,17 +38,24 @@ namespace SisVendas.Services
                                  .Include(v => v.Cliente)
                                  .Include(v => v.Pagto)
                                  .Include(v => v.Vendedor)
-                                 .Include(v => v.ItemVendas)
                                  .FirstOrDefaultAsync(vend => vend.IdVenda == id);
         }
+
+
+        // GET: Vendas ClienteId, VendedorId, DtVend
+        public async Task<Vendas> FindByVendaAsync(Vendas venda)
+        {
+            return await _context.Vendas
+                                 .FirstOrDefaultAsync(v => v.dtVenda == venda.dtVenda && v.VendedorId == venda.VendedorId && v.ClienteId == venda.ClienteId);
+        }
+
 
 
         // Insert: Vendas 
         public async Task InsertAsync(Vendas vendas)
         {
             try
-            {
-                //vendas.ItemVendas.Add(itemVendas);  ItemVendas itemVendas
+            {                
                 _context.Add(vendas);
                 await _context.SaveChangesAsync();
             }
@@ -57,18 +63,25 @@ namespace SisVendas.Services
             {
                 throw new Exception(e.Message);
             }
-            /*
+           
+        }
+
+
+        // Insert: ItensVendas 
+        public async Task InsertItensVendAsync(ItemVendas itemVendas)
+        {
             try
             {
-                _context.Add(itemVendas);
+                _context.ItemVendas.Add(itemVendas);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-              */         
+
         }
+
 
 
         // Remove: Vendas 
@@ -91,7 +104,7 @@ namespace SisVendas.Services
                 throw new Exception("Id não existe");
             }
 
-                       
+            /*           
             try
             {
                 
@@ -99,7 +112,7 @@ namespace SisVendas.Services
                 /*
                 _context.Remove(itemVendas);
                 await _context.SaveChangesAsync();
-                */
+                
                 Vendas venda = await _context.Vendas.FindAsync(id);
                 venda.ItemVendas.Remove(itemVendas);
 
@@ -110,6 +123,7 @@ namespace SisVendas.Services
             {
                 throw new Exception(e.Message);
             }
+            */    
         }
 
 

@@ -22,7 +22,7 @@ namespace SisVendas.Services
         // GET: Produtos
         public async Task<List<Produto>> FindAllAsync()
         {
-            return await _context.Produtos.ToListAsync();
+            return await _context.Produtos.Include(depto => depto.Departamento).ToListAsync();
         }
 
         // GET: Produto ID

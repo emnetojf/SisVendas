@@ -133,9 +133,13 @@ namespace SisVendas.Migrations
 
                     b.Property<int>("FormaPagtoId");
 
+                    b.Property<string>("ListaProdutos");
+
                     b.Property<int?>("ProdutoIdProd");
 
                     b.Property<int>("Status");
+
+                    b.Property<double>("TotalVend");
 
                     b.Property<int>("VendedorId");
 
@@ -182,7 +186,7 @@ namespace SisVendas.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SisVendas.Models.Vendas", "Vendas")
-                        .WithMany("ItemVendas")
+                        .WithMany()
                         .HasForeignKey("VendasId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

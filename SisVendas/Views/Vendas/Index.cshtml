@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SisVendas.Models.Vendas>
+
+@{
+    ViewData["Title"] = "Vendas";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr />
+<p>
+    <a asp-action="Create">Cadastrar</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Vendedor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pagto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dtVenda)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vendedor.StrNomeVend)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.strNomeCli)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pagto.strPagto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dtVenda)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdVenda">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdVenda">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdVenda">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -10,7 +10,7 @@ using SisVendas.Models;
 namespace SisVendas.Migrations
 {
     [DbContext(typeof(SisVendasContext))]
-    [Migration("20190624190032_Inicial")]
+    [Migration("20190630220520_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,9 +135,13 @@ namespace SisVendas.Migrations
 
                     b.Property<int>("FormaPagtoId");
 
+                    b.Property<string>("ListaProdutos");
+
                     b.Property<int?>("ProdutoIdProd");
 
                     b.Property<int>("Status");
+
+                    b.Property<double>("TotalVend");
 
                     b.Property<int>("VendedorId");
 
@@ -184,7 +188,7 @@ namespace SisVendas.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SisVendas.Models.Vendas", "Vendas")
-                        .WithMany("ItemVendas")
+                        .WithMany()
                         .HasForeignKey("VendasId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
