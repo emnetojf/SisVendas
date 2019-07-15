@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
 
-namespace SisVendas.Controllers1
+namespace SisVendas.Controllers
 {
     public class DepartamentosController : Controller
     {

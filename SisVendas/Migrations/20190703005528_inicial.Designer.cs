@@ -10,8 +10,8 @@ using SisVendas.Models;
 namespace SisVendas.Migrations
 {
     [DbContext(typeof(SisVendasContext))]
-    [Migration("20190630220520_Inicial")]
-    partial class Inicial
+    [Migration("20190703005528_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

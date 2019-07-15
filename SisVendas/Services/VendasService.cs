@@ -43,13 +43,13 @@ namespace SisVendas.Services
 
 
         // GET: Vendas ClienteId, VendedorId, DtVend
+        
         public async Task<Vendas> FindByVendaAsync(Vendas venda)
         {
             return await _context.Vendas
                                  .FirstOrDefaultAsync(v => v.dtVenda == venda.dtVenda && v.VendedorId == venda.VendedorId && v.ClienteId == venda.ClienteId);
         }
-
-
+        
 
         // Insert: Vendas 
         public async Task InsertAsync(Vendas vendas)
@@ -68,6 +68,7 @@ namespace SisVendas.Services
 
 
         // Insert: ItensVendas 
+        
         public async Task InsertItensVendAsync(ItemVendas itemVendas)
         {
             try
@@ -81,7 +82,7 @@ namespace SisVendas.Services
             }
 
         }
-
+        
 
 
         // Remove: Vendas 

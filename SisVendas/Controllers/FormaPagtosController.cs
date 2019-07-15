@@ -9,7 +9,7 @@ using SisVendas.Models;
 using SisVendas.Models.ViewModels;
 using SisVendas.Services;
 
-namespace SisVendas.Controllers1
+namespace SisVendas.Controllers
 {
     public class FormaPagtosController : Controller
     {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SisVendas.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,7 +99,10 @@ namespace SisVendas.Migrations
                     ClienteId = table.Column<int>(nullable: false),
                     FormaPagtoId = table.Column<int>(nullable: false),
                     dtVenda = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    ListaProdutos = table.Column<string>(nullable: true),
+                    TotalVend = table.Column<double>(nullable: false),
+                    ProdutoIdProd = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,6 +119,12 @@ namespace SisVendas.Migrations
                         principalTable: "FormaPagtos",
                         principalColumn: "IdPagto",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vendas_Produtos_ProdutoIdProd",
+                        column: x => x.ProdutoIdProd,
+                        principalTable: "Produtos",
+                        principalColumn: "IdProd",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Vendas_Vendedor_VendedorId",
                         column: x => x.VendedorId,
@@ -176,6 +185,11 @@ namespace SisVendas.Migrations
                 name: "IX_Vendas_FormaPagtoId",
                 table: "Vendas",
                 column: "FormaPagtoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vendas_ProdutoIdProd",
+                table: "Vendas",
+                column: "ProdutoIdProd");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vendas_VendedorId",

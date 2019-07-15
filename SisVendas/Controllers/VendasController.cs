@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SisVendas.Models;
 using SisVendas.Models.ViewModels;
 using SisVendas.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SisVendas.Controllers
 {
@@ -70,8 +70,8 @@ namespace SisVendas.Controllers
             var clientes = await _clienteService.FindAllAsync();
             var vendedores = await _vendedorService.FindAllAsync();
             var formapagtos = await _formaPagtoService.FindAllAsync();
-            var produtos = await _produtoService.FindAllAsync();
-            var vwModel = new VendasFormViewModel { Vendas = vendas, Clientes = clientes, Vendedores = vendedores, FormaPagtos = formapagtos,  Produtos = produtos };
+            var produtos = await _produtoService.FindAllAsync();    
+            var vwModel = new VendasFormViewModel { Vendas = vendas, Clientes = clientes, Vendedores = vendedores, FormaPagtos = formapagtos, Produtos = produtos };
 
             return View(vwModel);
         }
@@ -95,10 +95,11 @@ namespace SisVendas.Controllers
             await _vendasService.InsertAsync(venda);
 
             // Recupera a Venda gravada para selecionar o IdVend
-            /*var Vend = await _vendasService.FindByVendaAsync(venda);
+            var Vend = await _vendasService.FindByVendaAsync(venda);
 
             // Recupera a lista de itens produtos 
-            List<ItemVendas> listItemVendas = JsonConvert.DeserializeObject<List<ItemVendas>>(venda.ListaProdutos);
+
+            List<ItemVendas> listItemVendas = JsonConvert.DeserializeObject<List<ItemVendas>>(Vend.ListaProdutos);
 
             ItemVendas itemVendas;
 
@@ -116,7 +117,7 @@ namespace SisVendas.Controllers
                 // Grava os dados itens
                 await _vendasService.InsertItensVendAsync(itemVendas);
             }
-            */
+            
 
             return RedirectToAction(nameof(Index));
         }

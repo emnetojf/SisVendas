@@ -25,12 +25,10 @@ namespace SisVendas.Models
         public ItemVendas()
         { }
 
-        public ItemVendas(int itemID, Vendas vendas, int vendasId, Produto produto, int produtoId, int intQuant, double douValor)
+        public ItemVendas(int itemID, int vendasId, int produtoId, int intQuant, double douValor)
         {
             ItemID = itemID;
-            Vendas = vendas;
-            VendasId = vendasId;
-            Produto = produto;
+            VendasId = vendasId;            
             ProdutoId = produtoId;
             this.intQuant = intQuant;
             this.douValor = douValor;
