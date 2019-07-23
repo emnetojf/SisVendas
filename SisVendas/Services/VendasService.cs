@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SisVendas.Services
@@ -20,12 +22,12 @@ namespace SisVendas.Services
 
 
         // GET: Vendas
-        public async Task<List<Vendas>> FindAllAsync()
+        public async Task<System.Collections.Generic.List<Vendas>> FindAllAsync()
         {
             return await _context.Vendas
                                  .Include(v => v.Cliente)
                                  .Include(v => v.Pagto)
-                                 .Include(v => v.Vendedor)                                 
+                                 .Include(v => v.Vendedor)
                                  .ToListAsync();
         }
 
@@ -34,6 +36,7 @@ namespace SisVendas.Services
         // GET: Vendas ID
         public async Task<Vendas> FindByIDAsync(int id)
         {
+
             return await _context.Vendas
                                  .Include(v => v.Cliente)
                                  .Include(v => v.Pagto)
@@ -43,19 +46,52 @@ namespace SisVendas.Services
 
 
         // GET: Vendas ClienteId, VendedorId, DtVend
-        
+
         public async Task<Vendas> FindByVendaAsync(Vendas venda)
         {
             return await _context.Vendas
                                  .FirstOrDefaultAsync(v => v.dtVenda == venda.dtVenda && v.VendedorId == venda.VendedorId && v.ClienteId == venda.ClienteId);
         }
-        
+
+
+        // GET: ItemVendas ID
+        public System.Collections.Generic.List<ItemVendas> FindItemVendaByIDAsync(int? id)
+        {
+            System.Collections.Generic.List<ItemVendas> ListItemVendas = new System.Collections.Generic.List<ItemVendas>();
+            ItemVendas itemVendas; 
+
+
+            var qryItemVendas = _context.ItemVendas
+                                        .Include(i => i.Produto)
+                                        .Include(i => i.Vendas)
+                                        .Where(m => m.ItemID == id)
+                                        .ToList();
+            for (var i = 0; i<qryItemVendas.Count; i++)
+            {
+                itemVendas = new ItemVendas
+                {
+                    VendasId = qryItemVendas[i].VendasId,
+                    ItemID = qryItemVendas[i].ItemID,
+                    ProdutoId = qryItemVendas[i].ProdutoId,
+                    intQuant = qryItemVendas[i].intQuant,
+                    douValor = qryItemVendas[i].douValor,
+                    Produto = qryItemVendas[i].Produto,
+                    Vendas = qryItemVendas[i].Vendas
+                };
+
+                ListItemVendas.Add(itemVendas);
+            }
+
+            return ListItemVendas;
+        }
+
+
 
         // Insert: Vendas 
         public async Task InsertAsync(Vendas vendas)
         {
             try
-            {                
+            {
                 _context.Add(vendas);
                 await _context.SaveChangesAsync();
             }
@@ -63,12 +99,12 @@ namespace SisVendas.Services
             {
                 throw new Exception(e.Message);
             }
-           
+
         }
 
 
         // Insert: ItensVendas 
-        
+
         public async Task InsertItensVendAsync(ItemVendas itemVendas)
         {
             try
@@ -82,7 +118,7 @@ namespace SisVendas.Services
             }
 
         }
-        
+
 
 
         // Remove: Vendas 
@@ -124,7 +160,7 @@ namespace SisVendas.Services
             {
                 throw new Exception(e.Message);
             }
-            */    
+            */
         }
 
 
@@ -173,6 +209,9 @@ namespace SisVendas.Services
                 throw new Exception(e.Message);
             }
         }
+    }
 
+    public class List<T>
+    {
     }
 }

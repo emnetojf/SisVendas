@@ -19,7 +19,7 @@ namespace SisVendas.Services
 
 
         // GET: Clientes
-        public async Task<List<Cliente>> FindAllAsync()
+        public async Task<System.Collections.Generic.List<Cliente>> FindAllAsync()
         {
             return await _context.Clientes.ToListAsync();
         }

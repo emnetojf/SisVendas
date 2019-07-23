@@ -17,7 +17,7 @@ namespace SisVendas.Services
 
       
         // Async
-        public async Task<List<Departamento>> FindAllAsync()
+        public async Task<System.Collections.Generic.List<Departamento>> FindAllAsync()
         {
             return await _context.Departamentos.OrderBy(depto => depto.strDepto).ToListAsync();
         }

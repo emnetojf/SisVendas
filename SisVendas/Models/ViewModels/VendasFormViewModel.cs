@@ -15,7 +15,7 @@ namespace SisVendas.Models.ViewModels
         public ICollection<FormaPagto> FormaPagtos { get; set; }
 
         public ICollection<Vendas> Vendas { get; set; }
-        
+        public ICollection<ItemVendas> Itemvendas { get; set; }
         public ICollection<Produto> Produtos { get; set; }
     }
 }

@@ -26,7 +26,9 @@ namespace SisVendas.Models
 
         public StatusVendas Status { get; set; }
 
-        
+        public virtual Produto Produto { get; set; }
+        public virtual ItemVendas ItemVendas { get; set; }
+
         public string ListaProdutos { get; set; }
         
         [DisplayFormat(DataFormatString = "{0:F2}")] // Formato 0.00

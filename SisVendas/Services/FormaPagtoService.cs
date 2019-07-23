@@ -20,7 +20,7 @@ namespace SisVendas.Services
 
 
         // GET: Pagtos
-        public async Task<List<FormaPagto>> FindAllAsync()
+        public async Task<System.Collections.Generic.List<FormaPagto>> FindAllAsync()
         {
             return await _context.FormaPagtos.ToListAsync();
         }

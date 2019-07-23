@@ -57,8 +57,8 @@ namespace SisVendas
             var localOptions = new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture(enUS),
-                SupportedCultures = new List<CultureInfo> { enUS },
-                SupportedUICultures = new List<CultureInfo> { enUS }
+                SupportedCultures = new System.Collections.Generic.List<CultureInfo> { enUS },
+                SupportedUICultures = new System.Collections.Generic.List<CultureInfo> { enUS }
             };
 
             app.UseRequestLocalization(localOptions);

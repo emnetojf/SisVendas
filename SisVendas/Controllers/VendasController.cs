@@ -6,6 +6,7 @@ using SisVendas.Models.ViewModels;
 using SisVendas.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SisVendas.Controllers
@@ -32,6 +33,7 @@ namespace SisVendas.Controllers
 
 
 
+
         // GET: Vendas
         public async Task<IActionResult> Index()
         {
@@ -50,15 +52,20 @@ namespace SisVendas.Controllers
             }
 
             var venda = await _vendasService.FindByIDAsync(id.Value);
-
-
+            
             if (venda == null)
             {
                 return NotFound();
             }
 
-            return View(venda);
+            var list =  _vendasService.FindItemVendaByIDAsync(id.Value);
+
+            ViewBag.ListaProdutos = _vendasService.FindItemVendaByIDAsync(id.Value);
+
+            return View();
+
         }
+
 
 
 
@@ -70,7 +77,7 @@ namespace SisVendas.Controllers
             var clientes = await _clienteService.FindAllAsync();
             var vendedores = await _vendedorService.FindAllAsync();
             var formapagtos = await _formaPagtoService.FindAllAsync();
-            var produtos = await _produtoService.FindAllAsync();    
+            var produtos = await _produtoService.FindAllAsync();
             var vwModel = new VendasFormViewModel { Vendas = vendas, Clientes = clientes, Vendedores = vendedores, FormaPagtos = formapagtos, Produtos = produtos };
 
             return View(vwModel);
@@ -99,7 +106,7 @@ namespace SisVendas.Controllers
 
             // Recupera a lista de itens produtos 
 
-            List<ItemVendas> listItemVendas = JsonConvert.DeserializeObject<List<ItemVendas>>(Vend.ListaProdutos);
+            System.Collections.Generic.List<ItemVendas> listItemVendas = JsonConvert.DeserializeObject<System.Collections.Generic.List<ItemVendas>>(Vend.ListaProdutos);
 
             ItemVendas itemVendas;
 
@@ -117,7 +124,7 @@ namespace SisVendas.Controllers
                 // Grava os dados itens
                 await _vendasService.InsertItensVendAsync(itemVendas);
             }
-            
+
 
             return RedirectToAction(nameof(Index));
         }
@@ -176,8 +183,8 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            
-           VendasFormViewModel vwModel = new VendasFormViewModel { Venda = venda };
+
+            VendasFormViewModel vwModel = new VendasFormViewModel { Venda = venda };
             return View(vwModel);
         }
 
@@ -213,7 +220,7 @@ namespace SisVendas.Controllers
             }
             else
             {
-              
+
                 var venda = await _vendasService.FindAllAsync();
                 VendasFormViewModel vwModel = new VendasFormViewModel { Vendas = venda };
                 return View(vwModel);

@@ -20,7 +20,7 @@ namespace SisVendas.Services
 
 
         // GET: Produtos
-        public async Task<List<Produto>> FindAllAsync()
+        public async Task<System.Collections.Generic.List<Produto>> FindAllAsync()
         {
             return await _context.Produtos.Include(depto => depto.Departamento).ToListAsync();
         }

@@ -1,57 +1,87 @@
-﻿@model SisVendas.Models.ViewModels.VendasFormViewModel
+﻿@model SisVendas.Models.ItemVendas
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes Vendas";
 }
 
-<h2>Details</h2>
+<h4>@ViewData["Title"]</h4>
+
+<hr />
 
 <div>
-    <h4>Vendas</h4>
-    <hr />
+    
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Venda.Vendedor)
+            @Html.DisplayName("Cod. Vendedor")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Venda.Vendedor.StrNomeVend)
+            @Html.DisplayFor(Model => Model.Vendas.Vendedor.StrNomeVend)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Venda.Cliente)
+            @Html.DisplayName("Cliente")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Venda.Cliente.StrNomeCli)
+            @Html.DisplayFor(model => model.Vendas.Cliente.StrNomeCli)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Venda.Pagto)
+            @Html.DisplayName("Forma Pagto")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Venda.Pagto.strPagto)
+            @Html.DisplayFor(model => model.Vendas.Pagto.strPagto)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Venda.dtVenda)
+            @Html.DisplayName("Data Venda")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Venda.dtVenda)
+            @Html.DisplayFor(model => model.Vendas.dtVenda)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Venda.Status)
+            @Html.DisplayName("Status")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Venda.Status)
-        </dd>
-        <dd>
-            @Html.DisplayFor(model => model.Itemvenda.Produto)
-        </dd>
-        <dd>
-            @Html.DisplayFor(model => model.Itemvenda.intQuant)
-        </dd>
-        <dd>
-            @Html.DisplayFor(model => model.Itemvenda.douValor)
+            @Html.DisplayFor(model => model.Vendas.Status)
         </dd>
     </dl>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ProdutoId</th>
+                <th>Produto</th>
+                <th>Quant.</th>
+                <th>Valor</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in (List<ItemVendas>) ViewBag.ListaProdutos)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProdutoId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Produto.strNomeProd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.intQuant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.douValor)
+                </td>
+                <td>
+                    <div style="float:left; font-size:22px;">Total: R$</div>
+                    <div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda">0.00</div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Venda.IdVenda">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit">Editar</a> |
+    <a asp-action="Index">Retorna Lista</a>
 </div>

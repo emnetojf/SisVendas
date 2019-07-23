@@ -141,7 +141,7 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            List<Departamento> departs = await _departamentoService.FindAllAsync();
+            System.Collections.Generic.List<Departamento> departs = await _departamentoService.FindAllAsync();
             ProdutoFormViewModel vwModel = new ProdutoFormViewModel { Produto = produto, Departamentos = departs };
             return View(vwModel);
         }
