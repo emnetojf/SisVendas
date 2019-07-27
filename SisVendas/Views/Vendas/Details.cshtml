@@ -1,4 +1,4 @@
-﻿@model SisVendas.Models.ItemVendas
+﻿@model SisVendas.Models.Vendas
 
 @{
     ViewData["Title"] = "Detalhes Vendas";
@@ -9,79 +9,71 @@
 <hr />
 
 <div>
-    
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayName("Cod. Vendedor")
-        </dt>
-        <dd>
-            @Html.DisplayFor(Model => Model.Vendas.Vendedor.StrNomeVend)
-        </dd>
-        <dt>
-            @Html.DisplayName("Cliente")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Vendas.Cliente.StrNomeCli)
-        </dd>
-        <dt>
-            @Html.DisplayName("Forma Pagto")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Vendas.Pagto.strPagto)
-        </dd>
-        <dt>
-            @Html.DisplayName("Data Venda")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Vendas.dtVenda)
-        </dd>
-        <dt>
-            @Html.DisplayName("Status")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Vendas.Status)
-        </dd>
+        <dt> @Html.DisplayName("Venda") </dt>
+        <dd> @Html.DisplayFor(model => model.IdVenda)</dd>
+
+        <dt> @Html.DisplayName("Data Venda") </dt>
+        <dd> @Html.DisplayFor(model => model.dtVenda)</dd>
+
+        <dt> @Html.DisplayName("Cliente") </dt>
+        <dd> @Html.DisplayFor(model => model.Cliente.StrNomeCli)</dd>
+
+        <dt> @Html.DisplayName("Forma Pagto") </dt>
+        <dd> @Html.DisplayFor(model => model.Pagto.strPagto)</dd>
+
+        <dt> @Html.DisplayName("Vendedor") </dt>
+        <dd> @Html.DisplayFor(model => model.Vendedor.StrNomeVend)</dd>
     </dl>
-
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ProdutoId</th>
-                <th>Produto</th>
-                <th>Quant.</th>
-                <th>Valor</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in (List<ItemVendas>) ViewBag.ListaProdutos)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProdutoId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Produto.strNomeProd)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.intQuant)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.douValor)
-                </td>
-                <td>
-                    <div style="float:left; font-size:22px;">Total: R$</div>
-                    <div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda">0.00</div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-
-
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Produto</th>
+            <th>Quant.</th>
+            <th>Valor</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in (List<ItemVendas>)ViewBag.ItemVendas)
+            {
+                var totalprod = item.douQuant * item.douValor;                
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProdutoId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Produto.strNomeProd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.douQuant)
+                    </td>
+                    <td>
+                        R$ @Html.DisplayFor(modelItem => item.douValor)
+                    </td>
+                    <td>
+                        <div style="float:left;">R$ </div>
+                        <div style="float:left; margin-left:5px;" id="totalprod">@Html.DisplayFor(modelItem => totalprod)</div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div style="float:left; font-size:22px;">Total: R$</div>
+<div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda"> @ViewBag.Totalvenda</div>
+
+<br /> <br />
+
 <div>
     <a asp-action="Edit">Editar</a> |
     <a asp-action="Index">Retorna Lista</a>
 </div>
+
+

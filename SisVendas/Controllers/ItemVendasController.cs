@@ -21,7 +21,12 @@ namespace SisVendas.Controllers
         // GET: ItemVendas
         public async Task<IActionResult> Index()
         {
-            var sisVendasContext = _context.ItemVendas.Include(i => i.Produto).Include(i => i.Vendas);
+            var sisVendasContext = _context.ItemVendas
+                                    .Include(i => i.Produto)
+                                    .Include(i => i.Vendas)
+                                    .Include(i => i.Vendas.Cliente)
+                                    .Include(i => i.Vendas.Pagto)
+                                    .Include(i => i.Vendas.Vendedor);
             return View(await sisVendasContext.ToListAsync());
         }
 

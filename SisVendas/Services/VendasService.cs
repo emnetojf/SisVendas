@@ -37,11 +37,12 @@ namespace SisVendas.Services
         public async Task<Vendas> FindByIDAsync(int id)
         {
 
-            return await _context.Vendas
+            var venda = await _context.Vendas
                                  .Include(v => v.Cliente)
                                  .Include(v => v.Pagto)
                                  .Include(v => v.Vendedor)
                                  .FirstOrDefaultAsync(vend => vend.IdVenda == id);
+            return venda;
         }
 
 
@@ -55,34 +56,17 @@ namespace SisVendas.Services
 
 
         // GET: ItemVendas ID
-        public System.Collections.Generic.List<ItemVendas> FindItemVendaByIDAsync(int? id)
+
+        public async Task<System.Collections.Generic.List<ItemVendas>> FindItemVendaByIDAsync(int? id)
         {
-            System.Collections.Generic.List<ItemVendas> ListItemVendas = new System.Collections.Generic.List<ItemVendas>();
-            ItemVendas itemVendas; 
-
-
-            var qryItemVendas = _context.ItemVendas
-                                        .Include(i => i.Produto)
-                                        .Include(i => i.Vendas)
-                                        .Where(m => m.ItemID == id)
-                                        .ToList();
-            for (var i = 0; i<qryItemVendas.Count; i++)
-            {
-                itemVendas = new ItemVendas
-                {
-                    VendasId = qryItemVendas[i].VendasId,
-                    ItemID = qryItemVendas[i].ItemID,
-                    ProdutoId = qryItemVendas[i].ProdutoId,
-                    intQuant = qryItemVendas[i].intQuant,
-                    douValor = qryItemVendas[i].douValor,
-                    Produto = qryItemVendas[i].Produto,
-                    Vendas = qryItemVendas[i].Vendas
-                };
-
-                ListItemVendas.Add(itemVendas);
-            }
-
-            return ListItemVendas;
+            return await _context.ItemVendas
+                                 .Include(i => i.Produto)
+                                 .Include(i => i.Vendas)
+                                 .Include(i => i.Vendas.Cliente)
+                                 .Include(i => i.Vendas.Pagto)
+                                 .Include(i => i.Vendas.Vendedor)
+                                 .Where(m => m.VendasId == id)
+                                 .ToListAsync();           
         }
 
 
@@ -141,26 +125,16 @@ namespace SisVendas.Services
                 throw new Exception("Id não existe");
             }
 
-            /*           
-            try
-            {
-                
-                ItemVendas itemVendas = await _context.ItemVendas.FindAsync(id);
-                /*
-                _context.Remove(itemVendas);
-                await _context.SaveChangesAsync();
-                
-                Vendas venda = await _context.Vendas.FindAsync(id);
-                venda.ItemVendas.Remove(itemVendas);
+            // Exclui os Itens da Venda
+            var itemVendas = await _context.ItemVendas.FindAsync(id);
+            _context.ItemVendas.Remove(itemVendas);
+            await _context.SaveChangesAsync();
 
-                _context.Remove(venda);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            */
+            // Exclui a Venda
+            var vendas = await _context.Vendas.FindAsync(id);
+            _context.Vendas.Remove(vendas);
+            await _context.SaveChangesAsync();
+
         }
 
 
@@ -173,30 +147,7 @@ namespace SisVendas.Services
             if (!HasAny)
             {
                 throw new Exception("Id não existe");
-            }
-
-            /*
-            , ItemVendas itemVendas
-
-            // Verifica se IDVendas no Item Vendas existe
-            HasAny = await _context.ItemVendas.AnyAsync(item => item.VendasId == itemVendas.VendasId);
-
-            if (!HasAny)
-            {
-                throw new Exception("Id não existe");
-            }
-            
-            /*
-            try
-            {
-                _context.Update(itemVendas);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            */
+            }            
 
             try
             {
@@ -211,7 +162,5 @@ namespace SisVendas.Services
         }
     }
 
-    public class List<T>
-    {
-    }
+   
 }

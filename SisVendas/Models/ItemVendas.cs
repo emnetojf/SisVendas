@@ -14,9 +14,10 @@ namespace SisVendas.Models
         public int ProdutoId { get; set; }
 
         [Required(ErrorMessage = "{0} requerido!")]
-        [Display(Name = "Quantidade!")]
-        public int intQuant { get; set; }
-        
+        [DisplayFormat(DataFormatString = "{0:F2}")] // Formato 0.00
+        public double douQuant { get; set; }
+
+
         [Required(ErrorMessage = "{0} requerido!")]
         [Display(Name = "Preço do produto!")]
         [DisplayFormat(DataFormatString = "{0:F2}")] // Formato 0.00
@@ -25,12 +26,12 @@ namespace SisVendas.Models
         public ItemVendas()
         { }
 
-        public ItemVendas(int itemID, int vendasId, int produtoId, int intQuant, double douValor)
+        public ItemVendas(int itemID, int vendasId, int produtoId, double douQuant, double douValor)
         {
             ItemID = itemID;
             VendasId = vendasId;            
             ProdutoId = produtoId;
-            this.intQuant = intQuant;
+            this.douQuant = douQuant;
             this.douValor = douValor;
         }
     }

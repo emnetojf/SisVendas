@@ -5,8 +5,6 @@ using SisVendas.Models;
 using SisVendas.Models.ViewModels;
 using SisVendas.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SisVendas.Controllers
@@ -51,19 +49,36 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
+            var qryItemVendas = await _vendasService.FindItemVendaByIDAsync(id.Value);
+
+            if (qryItemVendas == null)
+            {
+                return NotFound();
+            }
+
+            double Totalvenda = 0.00;
+
+            for (int i = 0; i < qryItemVendas.Count; i++)
+            {
+                Totalvenda += qryItemVendas[i].douQuant * qryItemVendas[i].douValor;
+            }
+
+
+           ViewBag.Totalvenda = Totalvenda;
+
+
             var venda = await _vendasService.FindByIDAsync(id.Value);
-            
+
             if (venda == null)
             {
                 return NotFound();
             }
 
-            var list =  _vendasService.FindItemVendaByIDAsync(id.Value);
+            ViewBag.ItemVendas = qryItemVendas;
 
-            ViewBag.ListaProdutos = _vendasService.FindItemVendaByIDAsync(id.Value);
 
-            return View();
-
+            return View(venda);
+           
         }
 
 
@@ -117,7 +132,7 @@ namespace SisVendas.Controllers
                 {
                     VendasId = Vend.IdVenda,
                     ProdutoId = listItemVendas[i].ProdutoId,
-                    intQuant = listItemVendas[i].intQuant,
+                    douQuant = listItemVendas[i].douQuant,
                     douValor = listItemVendas[i].douValor
                 };
 
@@ -144,6 +159,28 @@ namespace SisVendas.Controllers
             {
                 return NotFound();
             }
+
+            var qryItemVendas = await _vendasService.FindItemVendaByIDAsync(id.Value);
+
+            if (qryItemVendas == null)
+            {
+                return NotFound();
+            }
+
+
+            double Totalvenda = 0.00;
+
+            for (int i = 0; i < qryItemVendas.Count; i++)
+            {
+                Totalvenda += qryItemVendas[i].douQuant * qryItemVendas[i].douValor;
+            }
+
+
+            ViewBag.Totalvenda = Totalvenda;
+
+
+
+            ViewBag.ItemVendas = qryItemVendas;
 
             return View(venda);
         }

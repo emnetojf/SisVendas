@@ -17,16 +17,36 @@
             @Html.DisplayFor(model => model.Vendas.IdVenda)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Vendas.Cliente)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vendas.Cliente.StrNomeCli)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendas.Pagto)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vendas.Pagto.strPagto)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendas.Vendedor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vendas.Vendedor.StrNomeVend)
+        </dd>
+
+
+        <dt>
             @Html.DisplayNameFor(model => model.Produto)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Produto.strNomeProd)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.intQuant)
+            @Html.DisplayNameFor(model => model.douQuant)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.intQuant)
+            @Html.DisplayFor(model => model.douQuant)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.douValor)

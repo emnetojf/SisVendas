@@ -16,10 +16,19 @@
                 @Html.DisplayNameFor(model => model.Vendas)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Vendas.Cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vendas.Pagto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vendas.Vendedor)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Produto)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.intQuant)
+                @Html.DisplayNameFor(model => model.douQuant)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.douValor)
@@ -34,10 +43,20 @@
                 @Html.DisplayFor(modelItem => item.Vendas.IdVenda)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Vendas.Cliente.StrNomeCli)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vendas.Pagto.strPagto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vendas.Vendedor.StrNomeVend)
+            </td>
+
+            <td>
                 @Html.DisplayFor(modelItem => item.Produto.strNomeProd)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.intQuant)
+                @Html.DisplayFor(modelItem => item.douQuant)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.douValor)
