@@ -31,9 +31,7 @@ namespace SisVendas.Models
 
         public string ListaProdutos { get; set; }
         
-        [DisplayFormat(DataFormatString = "{0:F2}")] // Formato 0.00
-        public double TotalVend { get; set; }
-        
+      
 
         public Vendas()
         {}

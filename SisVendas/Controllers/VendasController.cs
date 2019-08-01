@@ -64,7 +64,7 @@ namespace SisVendas.Controllers
             }
 
 
-           ViewBag.Totalvenda = Totalvenda;
+           ViewBag.Totalvenda = Totalvenda.ToString("F2");
 
 
             var venda = await _vendasService.FindByIDAsync(id.Value);
@@ -88,12 +88,12 @@ namespace SisVendas.Controllers
         public async Task<IActionResult> Create()
         {
 
-            var vendas = await _vendasService.FindAllAsync();
+            //var vendas = await _vendasService.FindAllAsync();   Vendas = vendas,
             var clientes = await _clienteService.FindAllAsync();
             var vendedores = await _vendedorService.FindAllAsync();
             var formapagtos = await _formaPagtoService.FindAllAsync();
             var produtos = await _produtoService.FindAllAsync();
-            var vwModel = new VendasFormViewModel { Vendas = vendas, Clientes = clientes, Vendedores = vendedores, FormaPagtos = formapagtos, Produtos = produtos };
+            var vwModel = new VendasFormViewModel {  Clientes = clientes, Vendedores = vendedores, FormaPagtos = formapagtos, Produtos = produtos };
 
             return View(vwModel);
         }

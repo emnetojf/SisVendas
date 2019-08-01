@@ -118,11 +118,7 @@
             </div>
         </div>
 
-
-
-        <input type="text" asp-for="Venda.TotalVend" id="txtTotalVend" />
         <textarea style="display:normal" asp-for="Venda.ListaProdutos" id="ListaProdutos"></textarea>
-
 
         <br /> <br />
 
@@ -152,6 +148,8 @@
 
     var ListaProdutos = document.getElementById("ListaProdutos");
 
+  
+
     function AdicProd() {
 
         var descPreco = CodProd.options[CodProd.selectedIndex].text;
@@ -174,7 +172,9 @@
             "<td> R$" + arrayPreco[1] + "</td>" +
             "<td> R$" + total + "</td>" +
             "<td>  <button type='button' class='btn btn-default btn-danger' onclick='RemoveProd(this)'>Excluir</button>" + "&nbsp " + "</td>" +
-            "</tr>";
+            "<div style='float:left; ' id='totalexcluir'> <td>  " + total.toFixed(2) + " </td></div>" +
+        "</tr>";
+
                   
 
         // preenche a table com os Produtos              
@@ -186,7 +186,7 @@
 
         var TotalGeral = Math.round((Totalvenda.innerText * 1 + total) * 100) / 100;
         Totalvenda.innerHTML = TotalGeral;
-        txtTotalVend.value = TotalGeral.toString().replace(".", ",");
+        //txtTotalVend.value = TotalGeral.toString().replace(".", ",");
     }
 
 
@@ -197,14 +197,25 @@
         // Capturamos a referência da TABLE (tabela) pai da linha
         var objTable = objTR.parentNode;
         // Capturamos o índice da linha
-        var indexTR = objTR.rowIndex;
+        var indexTR = objTR.rowIndex -1;
+
+ 
+        var totalecluir = document.getElementById("ListProd").rows[indexTR].cells[6].innerHTML;
+        var TotalGeral = Totalvenda.innerText - totalecluir;
+        var valor = 0.00;
+
+        if (TotalGeral == 0)
+            Totalvenda.innerHTML = valor.toFixed(2);
+        else
+            valor = Math.round((TotalGeral * 1) * 100) / 100;
+            Totalvenda.innerHTML = valor.toFixed(2);
+
         // Chamamos o método de remoção de linha nativo do JavaScript, passando como parâmetro o índice da linha
         objTable.deleteRow(indexTR);
 
-
         itens.Produtos.splice(indexTR,1)
         ListaProdutos.innerHTML = JSON.stringify(itens.Produtos);    
-
+       
     }
 
 </script>
