@@ -176,7 +176,7 @@ namespace SisVendas.Controllers
             }
 
 
-            ViewBag.Totalvenda = Totalvenda;
+            ViewBag.Totalvenda = Totalvenda.ToString("F2");
 
 
 
@@ -221,7 +221,34 @@ namespace SisVendas.Controllers
             }
 
 
-            VendasFormViewModel vwModel = new VendasFormViewModel { Venda = venda };
+            var qryItemVendas = await _vendasService.FindItemVendaByIDAsync(id.Value);
+
+            if (qryItemVendas == null)
+            {
+                return NotFound();
+            }
+
+
+            double Totalvenda = 0.00;
+
+            for (int i = 0; i < qryItemVendas.Count; i++)
+            {
+                Totalvenda += qryItemVendas[i].douQuant * qryItemVendas[i].douValor;
+            }
+
+
+            ViewBag.Totalvenda = Totalvenda.ToString("F2");
+
+            ViewBag.ItemVendas = qryItemVendas;
+
+
+
+            var clientes = await _clienteService.FindAllAsync();
+            var vendedores = await _vendedorService.FindAllAsync();
+            var formapagtos = await _formaPagtoService.FindAllAsync();
+            var produtos = await _produtoService.FindAllAsync();
+          
+            VendasFormViewModel vwModel = new VendasFormViewModel { Venda = venda, Clientes = clientes, Vendedores = vendedores, FormaPagtos = formapagtos, Produtos = produtos };
             return View(vwModel);
         }
 

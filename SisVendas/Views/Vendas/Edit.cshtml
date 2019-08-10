@@ -1,43 +1,262 @@
-﻿<div class="col-lg-2">
-    <button type="button" class="btn btn-block btn-primary" onclick="AdicProd()">Adicionar</button>
+﻿@model SisVendas.Models.ViewModels.VendasFormViewModel
+@using SisVendas.Models.Enums
+
+@{
+    ViewData["Title"] = "Editar Venda";
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<hr />
+<div class="row">
+
+    <form asp-action="Edit">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-lg-4">
+
+                <div class="form-group">
+                    <label asp-for="Venda.VendedorId" class="control-label">Vendedor</label>
+                    <select asp-for="Venda.VendedorId" class="form-control" asp-items="@(new SelectList(Model.Vendedores, "IdVend", "StrNomeVend"))">
+                        <option></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Venda.ClienteId" class="control-label">Cliente</label>
+                    <select asp-for="Venda.ClienteId" class="form-control" asp-items="@(new SelectList(Model.Clientes, "IdCli", "StrNomeCli"))">
+                        <option></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Venda.FormaPagtoId" class="control-label">Forma Pagto</label>
+                    <select asp-for="Venda.FormaPagtoId" class="form-control" asp-items="@(new SelectList(Model.FormaPagtos, "IdPagto", "strPagto"))">
+                        <option></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Venda.dtVenda" class="control-label"></label>
+                    <input asp-for="Venda.dtVenda" class="form-control" />
+                    <span asp-validation-for="Venda.dtVenda" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Venda.Status" class="control-label"></label>
+                    <select asp-for="Venda.Status" class="form-control" asp-items="@Html.GetEnumSelectList<StatusVendas>()">
+                        <option></option>
+                    </select>
+                    <span asp-validation-for="Venda.Status" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4">
+                <label class="control-label">Produto</label>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="control-label">Quant.</label>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-lg-4">
+                <select class="form-control" id="sltProduto">
+                    <option></option>
+                    @{
+                        foreach (var item in Model.Produtos)
+                        {
+                            <option value="@item.IdProd">@item.strNomeProd | @item.douPreco </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <input type="text" class="form-control" value="1" id="txtQuant" />
+            </div>
+
+            <div class="col-lg-2">
+                <button type="button" class="btn btn-block btn-primary" onclick="AdicProd()">Adicionar</button>
+            </div>
+
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-lg-10">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Cod. Prod.</td>
+                            <td>Produto</td>
+                            <td>Quant.</td>
+                            <td>Preço</td>
+                            <td>Total Prod.</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody id="ListProd">
+                        @{
+                            foreach (var item in (List<ItemVendas>)ViewBag.ItemVendas)
+                            {
+                                 var total = item.douQuant * item.douValor;
+                                 var totalprod = total.ToString("F2"); 
+
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ProdutoId)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Produto.strNomeProd)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.douQuant)
+                                                    </td>
+                                                    <td>
+                                                        R$ @Html.DisplayFor(modelItem => item.douValor)
+                                                    </td>
+                                                    <td>
+                                                        <div style="float:left;">R$ </div>
+                                                        <div style="float:left; margin-left:5px;" id="totalprod">@Html.DisplayFor(modelItem => totalprod)</div>
+                                                    </td>
+                                                    
+                                                    <td>  
+                                                        <button type="button" class="btn btn-default btn-danger" onclick="RemoveProd(this)">Excluir</button> 
+                                                    </td> 
+                                                    
+                                                    <td style="display:normal">
+                                                        @Html.DisplayFor(modelItem => totalprod)
+                                                    </td>
+
+                                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <div style="float:left; font-size:22px;">Total: R$</div>
+                <div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda"> @ViewBag.Totalvenda</div>
+
+                <br /><br />
+
+            </div>
+        </div>
+
+        
+        <textarea style="display:normal" asp-for="Venda.ListaProdutos" id="ListaProdutos"></textarea>
+
+        <br /> <br />
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-default btn-success">Registrar</button>
+        </div>
+
+        <div class="form-group">
+            <a asp-action="Index">Retorna Lista</a>
+        </div>
+    </form>
+
 </div>
 
-<table border="1">
-    <tbody id="ListProd"></tbody>
-</table>
 
 
+<script>
 
-<script >
+    var itens = new Object();
+    itens.Produtos = new Array();
 
-    var i = 0;
+    var CodProd = document.getElementById("sltProduto");
+    var QuantProd = document.getElementById("txtQuant");
+
+    var ListProd = document.getElementById("ListProd");
+    var Totalvenda = document.getElementById("totalvenda");
+
+    var ListaProdutos = document.getElementById("ListaProdutos");
 
     function AdicProd() {
 
-        i += 1;
+        var descPreco = CodProd.options[CodProd.selectedIndex].text;
+        var arrayPreco = descPreco.split('|');
+        var total = Math.round((arrayPreco[1].replace(",", ".") * QuantProd.value) * 100) / 100;
+
+        itens.Produtos.push({
+            "ProdutoId": CodProd.value,
+            "douQuant": QuantProd.value,
+            "douValor": arrayPreco[1]
+        });
+
+        // preenche o campo txt ListaProdutos
+        ListaProdutos.innerHTML = JSON.stringify(itens.Produtos);
+
         var Produto = "<tr>" +
-            "<td> Conteúdo Linha "+ i +"</td>" +
-            "<td>  <button type='button' class='btn btn-default btn-danger' onclick='removerLinha(this)'>Excluir</button>" + "&nbsp " + "</td>" +
-            "</tr>";
-      
+            "<td>" + CodProd.value + "</td>" +
+            "<td>" + arrayPreco[0] + "</td>" +
+            "<td>" + QuantProd.value + "</td>" +
+            "<td> R$" + arrayPreco[1] + "</td>" +
+            "<td> R$" + total + "</td>" +
+            "<td>  <button type='button' class='btn btn-default btn-danger' onclick='RemoveProd(this)'>Excluir</button>" + "&nbsp " + "</td>" +
+            "<td style='display:none' > " + total.toFixed(2) + "</td>" +
+        "</tr>";
+
+
 
         // preenche a table com os Produtos
         ListProd.innerHTML += Produto;
+
+
+        document.getElementById("sltProduto").value = "";
+        document.getElementById("txtQuant").value = 1;
+
+        var TotalGeral = Math.round((Totalvenda.innerText * 1 + total) * 100) / 100;
+        Totalvenda.innerHTML = TotalGeral;
+        //txtTotalVend.value = TotalGeral.toString().replace(".", ",");
     }
 
 
-    // Função responsável em receber um objeto e extrair as informações necessárias para a remoção da linha.
-    function removerLinha(obj) {
+    function RemoveProd(obj) {
 
         // Capturamos a referência da TR (linha) pai do objeto
         var objTR = obj.parentNode.parentNode;
         // Capturamos a referência da TABLE (tabela) pai da linha
         var objTable = objTR.parentNode;
         // Capturamos o índice da linha
-        var indexTR = objTR.rowIndex;
+        var indexTR = objTR.rowIndex -1;
+
+        
+        var totalecluir = document.getElementById("ListProd").rows[indexTR].cells[6].innerHTML;
+        var TotalGeral = Totalvenda.innerText - totalecluir;
+        var valor = 0.00;
+
+        if (TotalGeral == 0)
+            Totalvenda.innerHTML = valor.toFixed(2);
+        else
+            valor = Math.round((TotalGeral * 1) * 100) / 100;
+            Totalvenda.innerHTML = valor.toFixed(2);
+
         // Chamamos o método de remoção de linha nativo do JavaScript, passando como parâmetro o índice da linha
         objTable.deleteRow(indexTR);
-        // Exibe uma mensagem de confirmação da remoção
-        alert("Remoção Efetuada com Sucesso!!");
+
+        itens.Produtos.splice(indexTR,1)
+        ListaProdutos.innerHTML = JSON.stringify(itens.Produtos);
+
     }
+
 </script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -57,7 +57,9 @@
             @{
                 foreach (var item in (List<ItemVendas>)ViewBag.ItemVendas)
                 {
-                    var totalprod = item.douQuant * item.douValor;
+                    var total = item.douQuant * item.douValor;
+                    var totalprod = total.ToString("F2"); 
+
 
                     <tr>
                         <td>

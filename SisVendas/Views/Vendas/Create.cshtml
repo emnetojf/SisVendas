@@ -107,7 +107,7 @@
                             <td></td>
                         </tr>
                     </thead>
-                    <tbody id="ListProd"> </tbody>
+                    <tbody id="ListProd"></tbody>
                 </table>
 
                 <div style="float:left; font-size:22px;">Total: R$</div>
@@ -118,6 +118,7 @@
             </div>
         </div>
 
+      
         <textarea style="display:normal" asp-for="Venda.ListaProdutos" id="ListaProdutos"></textarea>
 
         <br /> <br />
@@ -172,7 +173,7 @@
             "<td> R$" + arrayPreco[1] + "</td>" +
             "<td> R$" + total + "</td>" +
             "<td>  <button type='button' class='btn btn-default btn-danger' onclick='RemoveProd(this)'>Excluir</button>" + "&nbsp " + "</td>" +
-            "<div style='float:left; ' id='totalexcluir'> <td>  " + total.toFixed(2) + " </td></div>" +
+            "<td style='display:none' > " + total.toFixed(2) + "</td>" +
         "</tr>";
 
                   
@@ -199,7 +200,7 @@
         // Capturamos o índice da linha
         var indexTR = objTR.rowIndex -1;
 
- 
+         
         var totalecluir = document.getElementById("ListProd").rows[indexTR].cells[6].innerHTML;
         var TotalGeral = Totalvenda.innerText - totalecluir;
         var valor = 0.00;
