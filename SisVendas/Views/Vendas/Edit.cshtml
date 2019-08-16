@@ -12,6 +12,8 @@
 
     <form asp-action="Edit">
         <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="Venda.IdVenda" />
+
 
         <div class="row">
             <div class="col-lg-4">
@@ -111,43 +113,43 @@
                         @{
                             foreach (var item in (List<ItemVendas>)ViewBag.ItemVendas)
                             {
-                                 var total = item.douQuant * item.douValor;
-                                 var totalprod = total.ToString("F2"); 
+                                var total = item.douQuant * item.douValor;
+                                var totalprod = total.ToString("F2");
 
-                                                <tr>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.ProdutoId)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Produto.strNomeProd)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.douQuant)
-                                                    </td>
-                                                    <td>
-                                                        R$ @Html.DisplayFor(modelItem => item.douValor)
-                                                    </td>
-                                                    <td>
-                                                        <div style="float:left;">R$ </div>
-                                                        <div style="float:left; margin-left:5px;" id="totalprod">@Html.DisplayFor(modelItem => totalprod)</div>
-                                                    </td>
-                                                    
-                                                    <td>  
-                                                        <button type="button" class="btn btn-default btn-danger" onclick="RemoveProd(this)">Excluir</button> 
-                                                    </td> 
-                                                    
-                                                    <td style="display:normal">
-                                                        @Html.DisplayFor(modelItem => totalprod)
-                                                    </td>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProdutoId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Produto.strNomeProd)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.douQuant)
+                                    </td>
+                                    <td>
+                                        R$ @Html.DisplayFor(modelItem => item.douValor)
+                                    </td>
+                                    <td>
+                                        <div style="float:left;">R$ </div>
+                                        <div style="float:left; margin-left:5px;" id="totalprod">@Html.DisplayFor(modelItem => totalprod)</div>
+                                    </td>
 
-                                                </tr>
+                                    <td>
+                                        <button type="button" class="btn btn-default btn-danger" onclick="RemoveProd(this)">Excluir</button>
+                                    </td>
+
+                                    <td style="display:normal">
+                                        @Html.DisplayFor(modelItem => totalprod)
+                                    </td>
+
+                                </tr>
                             }
                         }
                     </tbody>
                 </table>
 
                 <div style="float:left; font-size:22px;">Total: R$</div>
-                <div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda"> @ViewBag.Totalvenda</div>
+                <div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda"></div>
 
                 <br /><br />
 
@@ -155,12 +157,13 @@
         </div>
 
         
-        <textarea style="display:normal" asp-for="Venda.ListaProdutos" id="ListaProdutos"></textarea>
+        <textarea style="display:normal" id="ListaProdutos"> @ViewBag.ListaProdutos </textarea>
+        
 
         <br /> <br />
 
         <div class="form-group">
-            <button type="submit" class="btn btn-default btn-success">Registrar</button>
+            <input type="submit" value="Salvar" class="btn btn-default" />
         </div>
 
         <div class="form-group">
@@ -169,7 +172,6 @@
     </form>
 
 </div>
-
 
 
 <script>
@@ -184,6 +186,8 @@
     var Totalvenda = document.getElementById("totalvenda");
 
     var ListaProdutos = document.getElementById("ListaProdutos");
+
+
 
     function AdicProd() {
 
@@ -207,8 +211,8 @@
             "<td> R$" + arrayPreco[1] + "</td>" +
             "<td> R$" + total + "</td>" +
             "<td>  <button type='button' class='btn btn-default btn-danger' onclick='RemoveProd(this)'>Excluir</button>" + "&nbsp " + "</td>" +
-            "<td style='display:none' > " + total.toFixed(2) + "</td>" +
-        "</tr>";
+            "<td style='display:normal' > " + total.toFixed(2) + "</td>" +
+            "</tr>";
 
 
 
@@ -232,25 +236,24 @@
         // Capturamos a referência da TABLE (tabela) pai da linha
         var objTable = objTR.parentNode;
         // Capturamos o índice da linha
-        var indexTR = objTR.rowIndex -1;
+        var indexTR = objTR.rowIndex - 1;
 
-        
-        var totalecluir = document.getElementById("ListProd").rows[indexTR].cells[6].innerHTML;
-        var TotalGeral = Totalvenda.innerText - totalecluir;
+
+        var totalexcluir = document.getElementById("ListProd").rows[indexTR].cells[6].innerHTML;
+        var TotalGeral = Totalvenda.innerText - totalexcluir;
         var valor = 0.00;
 
         if (TotalGeral == 0)
             Totalvenda.innerHTML = valor.toFixed(2);
         else
             valor = Math.round((TotalGeral * 1) * 100) / 100;
-            Totalvenda.innerHTML = valor.toFixed(2);
+        Totalvenda.innerHTML = valor.toFixed(2);
 
         // Chamamos o método de remoção de linha nativo do JavaScript, passando como parâmetro o índice da linha
         objTable.deleteRow(indexTR);
 
-        itens.Produtos.splice(indexTR,1)
+        itens.Produtos.splice(indexTR, 1)
         ListaProdutos.innerHTML = JSON.stringify(itens.Produtos);
-
     }
 
 </script>
