@@ -5,7 +5,7 @@ using SisVendas.Models;
 using SisVendas.Models.ViewModels;
 using SisVendas.Services;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Threading.Tasks;
 
 namespace SisVendas.Controllers
@@ -174,8 +174,6 @@ namespace SisVendas.Controllers
 
             ViewBag.Totalvenda = Totalvenda.ToString("F2");
 
-
-
             ViewBag.ItemVendas = qryItemVendas;
 
             return View(venda);
@@ -227,20 +225,20 @@ namespace SisVendas.Controllers
 
             double Totalvenda = 0.00;
 
-            List<ItemVendas> ListaProdutos = new List<ItemVendas>();
+            ArrayList ListaProdutos = new ArrayList();
             ItemVendas itemVendas;
 
             for (int i = 0; i < qryItemVendas.Count; i++)
             {
                 itemVendas = new ItemVendas
                 {
-                    VendasId = qryItemVendas[i].VendasId,
                     ProdutoId = qryItemVendas[i].ProdutoId,
                     douQuant = qryItemVendas[i].douQuant,
                     douValor = qryItemVendas[i].douValor
                 };
-                ListaProdutos.Add(itemVendas);
 
+                ListaProdutos.Add(itemVendas);
+                
 
                 Totalvenda += qryItemVendas[i].douQuant * qryItemVendas[i].douValor;
             }
@@ -250,8 +248,8 @@ namespace SisVendas.Controllers
 
             ViewBag.ItemVendas = qryItemVendas;
 
-            ViewBag.ListaProdutos = ListaProdutos;
-
+           
+            
 
             var clientes = await _clienteService.FindAllAsync();
             var vendedores = await _vendedorService.FindAllAsync();

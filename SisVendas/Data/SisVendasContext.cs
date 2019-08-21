@@ -16,6 +16,7 @@ namespace SisVendas.Models
         public DbSet<SisVendas.Models.FormaPagto> FormaPagtos { get; set; }
         public DbSet<SisVendas.Models.Vendas> Vendas { get; set; }
         public DbSet<SisVendas.Models.ItemVendas> ItemVendas { get; set; }
+      
 
     }
 }

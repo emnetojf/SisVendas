@@ -60,12 +60,18 @@ namespace SisVendas.Services
 
         public async Task<System.Collections.Generic.List<ItemVendas>> FindItemVendaByIDAsync(int? id)
         {
+            /*
             return await _context.ItemVendas
                                  .Include(i => i.Produto)
                                  .Include(i => i.Vendas)
                                  .Include(i => i.Vendas.Cliente)
                                  .Include(i => i.Vendas.Pagto)
                                  .Include(i => i.Vendas.Vendedor)
+                                 .Where(m => m.VendasId == id)
+                                 .ToListAsync();
+                                 */
+
+            return await _context.ItemVendas
                                  .Where(m => m.VendasId == id)
                                  .ToListAsync();
         }

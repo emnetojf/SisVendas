@@ -19,6 +19,15 @@ namespace SisVendas.Services
         }
 
 
+        // GET: Login
+        public async Task<Vendedor> ValidarLoginAsync(Vendedor vendedor)
+        {   
+            return await _context.Vendedor.FirstOrDefaultAsync(vend => vend.strEmail == vendedor.strEmail && vend.strSenha == vendedor.strSenha);
+        }
+
+
+                     
+
         // GET: Vendedor
         public async Task<System.Collections.Generic.List<Vendedor>> FindAllAsync()
         {

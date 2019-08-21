@@ -23,6 +23,7 @@
                     <select asp-for="Venda.VendedorId" class="form-control" asp-items="@(new SelectList(Model.Vendedores, "IdVend", "StrNomeVend"))">
                         <option></option>
                     </select>
+                    <span asp-validation-for="Venda.Vendedor.StrNomeVend" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -30,6 +31,7 @@
                     <select asp-for="Venda.ClienteId" class="form-control" asp-items="@(new SelectList(Model.Clientes, "IdCli", "StrNomeCli"))">
                         <option></option>
                     </select>
+                    <span asp-validation-for="Venda.Cliente.StrNomeCli" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -37,6 +39,7 @@
                     <select asp-for="Venda.FormaPagtoId" class="form-control" asp-items="@(new SelectList(Model.FormaPagtos, "IdPagto", "strPagto"))">
                         <option></option>
                     </select>
+                    <span asp-validation-for="Venda.Pagto.strPagto" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -111,6 +114,7 @@
                     </thead>
                     <tbody id="ListProd">
                         @{
+
                             foreach (var item in (List<ItemVendas>)ViewBag.ItemVendas)
                             {
                                 var total = item.douQuant * item.douValor;
@@ -135,7 +139,7 @@
                                     </td>
 
                                     <td>
-                                        <button type="button" class="btn btn-default btn-danger" onclick="RemoveProd(this)">Excluir</button>
+                                        <button type="button" class="btn btn-default btn-danger" onclick="Remove(this)">Excluir</button>
                                     </td>
 
                                     <td style="display:normal">
@@ -149,16 +153,15 @@
                 </table>
 
                 <div style="float:left; font-size:22px;">Total: R$</div>
-                <div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda"></div>
+                <div style="float:left; font-size:22px; margin-left:5px;" id="totalvenda">@ViewBag.Totalvenda</div>
 
                 <br /><br />
 
             </div>
         </div>
 
-        
-        <textarea style="display:normal" id="ListaProdutos"> @ViewBag.ListaProdutos </textarea>
-        
+        <textarea style="display:normal" id="ListaProdutos" asp-for="Venda.ListaProdutos">       
+         </textarea>
 
         <br /> <br />
 
@@ -186,7 +189,6 @@
     var Totalvenda = document.getElementById("totalvenda");
 
     var ListaProdutos = document.getElementById("ListaProdutos");
-
 
 
     function AdicProd() {
@@ -228,6 +230,27 @@
         //txtTotalVend.value = TotalGeral.toString().replace(".", ",");
     }
 
+    function Remove(obj) {
+        // Capturamos a referência da TR (linha) pai do objeto
+        var objTR = obj.parentNode.parentNode;
+        // Capturamos a referência da TABLE (tabela) pai da linha
+        var objTable = objTR.parentNode;
+        // Capturamos o índice da linha
+        var indexTR = objTR.rowIndex - 1;
+
+        var prod = JSON.parse(document.getElementById("ListaProdutos").innerHTML);
+        
+        itens.Produtos.push({
+            "ProdutoId": prod           
+        });
+
+         objTable.deleteRow(indexTR);
+
+        // preenche o campo txt ListaProdutos
+        ListaProdutos.innerHTML = JSON.stringify(itens.Produtos);
+    }
+
+
 
     function RemoveProd(obj) {
 
@@ -238,6 +261,7 @@
         // Capturamos o índice da linha
         var indexTR = objTR.rowIndex - 1;
 
+       
 
         var totalexcluir = document.getElementById("ListProd").rows[indexTR].cells[6].innerHTML;
         var TotalGeral = Totalvenda.innerText - totalexcluir;
@@ -251,6 +275,7 @@
 
         // Chamamos o método de remoção de linha nativo do JavaScript, passando como parâmetro o índice da linha
         objTable.deleteRow(indexTR);
+
 
         itens.Produtos.splice(indexTR, 1)
         ListaProdutos.innerHTML = JSON.stringify(itens.Produtos);

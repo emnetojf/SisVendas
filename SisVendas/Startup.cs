@@ -45,7 +45,7 @@ namespace SisVendas
             services.AddScoped<VendedorService>();
             services.AddScoped<VendasService>();
             services.AddScoped<FormaPagtoService>();
-            services.AddScoped<DepartamentoService>();
+            services.AddScoped<DepartamentoService>();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

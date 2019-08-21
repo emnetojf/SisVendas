@@ -21,6 +21,7 @@
                     <select asp-for="Venda.VendedorId" class="form-control" asp-items="@(new SelectList(Model.Vendedores, "IdVend", "StrNomeVend"))">
                         <option></option>
                     </select>
+                    <span asp-validation-for="Venda.Vendedor.StrNomeVend" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -28,6 +29,7 @@
                     <select asp-for="Venda.ClienteId" class="form-control" asp-items="@(new SelectList(Model.Clientes, "IdCli", "StrNomeCli"))">
                         <option></option>
                     </select>
+                    <span asp-validation-for="Venda.Cliente.StrNomeCli" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -35,6 +37,7 @@
                     <select asp-for="Venda.FormaPagtoId" class="form-control" asp-items="@(new SelectList(Model.FormaPagtos, "IdPagto", "strPagto"))">
                         <option></option>
                     </select>
+                    <span asp-validation-for="Venda.Pagto.strPagto" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

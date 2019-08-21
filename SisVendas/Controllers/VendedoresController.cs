@@ -22,6 +22,37 @@ namespace SisVendas.Controllers
         }
 
 
+        // GET: Vendedores/Login
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Vendedores/Login
+        [HttpPost]
+        public async Task<IActionResult> Login(Vendedor vendedor)
+        {
+            if (!ModelState.IsValid)
+            {
+                var loginok = await _vendedorService.ValidarLoginAsync(vendedor);
+
+                if (loginok != null)
+                {
+                    return RedirectToAction("index", "Home");
+                }
+                else
+                {
+                    TempData["ErroLogin"] = "Email ou Senha inválidos";    
+                }
+            }
+            
+            return View();
+        }
+                                           
+
+
+
 
         // GET: Vendedores
         public async Task<IActionResult> Index()
