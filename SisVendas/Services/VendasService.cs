@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace SisVendas.Services
 {
@@ -59,6 +60,7 @@ namespace SisVendas.Services
 
         public async Task<System.Collections.Generic.List<ItemVendas>> FindItemVendaByIDAsync(int? id)
         {
+            /*
             return await _context.ItemVendas
                                  .Include(i => i.Produto)
                                  .Include(i => i.Vendas)
@@ -66,7 +68,12 @@ namespace SisVendas.Services
                                  .Include(i => i.Vendas.Pagto)
                                  .Include(i => i.Vendas.Vendedor)
                                  .Where(m => m.VendasId == id)
-                                 .ToListAsync();           
+                                 .ToListAsync();
+                                 */
+
+            return await _context.ItemVendas
+                                 .Where(m => m.VendasId == id)
+                                 .ToListAsync();
         }
 
 
@@ -93,8 +100,14 @@ namespace SisVendas.Services
         {
             try
             {
-                _context.ItemVendas.Add(itemVendas);
-                await _context.SaveChangesAsync();
+                 await _context.Database.ExecuteSqlCommandAsync(
+                      "Insert into ItemVendas Values(@VendasId, @ProdutoId, @douQuant, @douValor)",
+                        new SqlParameter("VendasId", itemVendas.VendasId),
+                        new SqlParameter("ProdutoId", itemVendas.ProdutoId),
+                        new SqlParameter("douQuant", itemVendas.douQuant),
+                        new SqlParameter("douValor", itemVendas.douValor)
+                );               
+               
             }
             catch (Exception e)
             {
@@ -126,9 +139,7 @@ namespace SisVendas.Services
             }
 
             // Exclui os Itens da Venda
-            var itemVendas = await _context.ItemVendas.FindAsync(id);
-            _context.ItemVendas.Remove(itemVendas);
-            await _context.SaveChangesAsync();
+            await RemoveItensVendAsync(id);
 
             // Exclui a Venda
             var vendas = await _context.Vendas.FindAsync(id);
@@ -136,6 +147,13 @@ namespace SisVendas.Services
             await _context.SaveChangesAsync();
 
         }
+
+        public async Task RemoveItensVendAsync(int id)
+        {
+            await _context.Database.ExecuteSqlCommandAsync($"Delete from ItemVendas where VendasId = {id}");           
+        }
+
+
 
 
         // Update: Vendas 
@@ -147,11 +165,10 @@ namespace SisVendas.Services
             if (!HasAny)
             {
                 throw new Exception("Id não existe");
-            }            
+            }
 
             try
             {
-                //vendas.ItemVendas.Add(itemVendas);
                 _context.Update(vendas);
                 await _context.SaveChangesAsync();
             }
@@ -160,7 +177,8 @@ namespace SisVendas.Services
                 throw new Exception(e.Message);
             }
         }
+
     }
 
-   
+
 }

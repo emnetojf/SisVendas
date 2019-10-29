@@ -1,0 +1,58 @@
+select [strNomeCli],[DtNasc],[Sexo],[UF] from [dbo].[Clientes]
+GO
+
+select [strDepto] from [dbo].[Departamentos]           
+GO
+
+select [strPagto] from [dbo].[FormaPagtos]
+GO
+
+select [strNomeProd] ,[douPreco] ,[douQuant] ,[strUnid] ,[strFoto] ,[DepartamentoId] from [dbo].[Produtos]
+GO
+
+
+
+INSERT INTO [dbo].[Departamentos]
+           ([strDepto])
+     VALUES
+           ('Eletrônicos'), ('Informatica'), ('Smartphones')
+GO
+
+
+INSERT INTO [dbo].[FormaPagtos]
+           ([strPagto])
+     VALUES
+           ('Cartão à Vista'), ('Cartão à Prazo', ('Dinheiro')
+GO
+
+
+INSERT INTO [dbo].[Clientes]
+           ([strNomeCli]
+           ,[DtNasc]
+           ,[Sexo]
+           ,[UF])
+     VALUES
+          ('Jose Antonio', '1947-07-12 00:00:00.0000000', 2, 11),
+		  ('Maria joaquina', '1948-07-09 00:00:00.0000000', 1, 8),
+		  ('Pedro Manuel',	'1978-05-30 00:00:00.0000000',	2,	19)
+
+GO
+
+
+INSERT INTO [dbo].[Produtos]
+           ([strNomeProd]
+           ,[douPreco]
+           ,[douQuant]
+           ,[strUnid]
+           ,[strFoto]
+           ,[DepartamentoId])
+     VALUES
+           ('teclado wireless',	25.5, 20, 'UN',	'https://images-na.ssl-images-amazon.com/images/I/61RdmCrmo7L._SY450_.jpg',	2),
+		   ('Kit Teclado e Mouse Wireless',	69.9, 15, 'UN',	'https://images-americanas.b2w.io/produtos/01/00/item/129705/3/129705378_1GG.png', 2),
+		   ('Notebook Samsung', 1889, 5, 'UN', 'https://images-americanas.b2w.io/produtos/01/00/offers/01/00/item/133618/7/133618701_1GG.png', 2),
+		   ('Monitor LG', 918, 8,'UN',	'https://www.studiopc.com.br/media/catalog/product/cache/1/thumbnail/497x497/9df78eab33525d08d6e5fb8d27136e95/m/o/monitor-22-lg-ips-1_1.png', 2),
+		   ('Smart TV LED 49 LG', 1699.99, 10, 'UN', 'https://images-americanas.b2w.io/produtos/01/00/item/133718/2/133718278_1GG.jpg', 1),
+           ('Fritadeira Sem Óleo Digital Mondial', 289.9, 30, 'UN', 'https://images-americanas.b2w.io/produtos/01/00/oferta/47161/0/47161076_1GG.jpg', 1),
+           ('Smartphone Motorola Moto G7',	799, 8, 'UN', 'https://images-americanas.b2w.io/produtos/01/00/offers/01/00/item/134186/8/134186808_1GG.jpg', 3)
+GO
+

@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
-<body>
+<body onload="CarregaNomeLogado()">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -35,7 +35,12 @@
                     <li><a asp-area="" asp-controller="Departamentos" asp-action="Index">Departamentos</a></li>
                     <li><a asp-area="" asp-controller="Produtos" asp-action="Index">Produtos</a></li>
                     <li><a asp-area="" asp-controller="Vendedores" asp-action="Index">Vendedores</a></li>
-                    <li><a asp-area="" asp-controller="Vendas" asp-action="Index">Vendas</a></li>                   
+                    <li><a asp-area="" asp-controller="Vendas" asp-action="Index">Vendas</a></li>
+                    <li><a asp-area="" asp-controller="Vendedores" asp-action="Login">Login</a></li>
+
+                    @using Microsoft.AspNetCore.Http
+                    @inject IHttpContextAccessor HttpContextAccessor
+                    <li><a asp-area="" asp-controller="Vendedores" asp-action="Login" id="NomeUserLogado"></a></li>
                 </ul>
             </div>
         </div>
@@ -73,5 +78,18 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
+
+    <script>
+        function CarregaNomeLogado() {
+            var nome = '@HttpContextAccessor.HttpContext.Session.GetString("NomeUserLogado")'
+
+            if (nome != "") {
+                var divNome = document.getElementById("NomeUserLogado");
+                divNome.innerHTML = "Olá " + nome + " (Sair)";
+            } else {
+                window.location.href= '../Vendedores/Login'
+            }
+        }
+    </script>
 </body>
 </html>

@@ -25,18 +25,22 @@ namespace SisVendas.Models
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double douSalBase { get; set; }
 
+        [Required(ErrorMessage = "Informe {0} Usuário")]
+        [Display(Name = "Senha")]
+        public string strSenha { get; set; }
 
         public ICollection<Vendas> Vendas { get; set; } = new List<Vendas>();
 
         public Vendedor()
         { }
 
-        public Vendedor(int idVend, string strNomeVend, string strEmail, double douSalBase)
+        public Vendedor(int idVend, string strNomeVend, string strEmail, double douSalBase, string strSenha)
         {
             IdVend = idVend;
             StrNomeVend = strNomeVend;
             this.strEmail = strEmail;
             this.douSalBase = douSalBase;
+            this.strSenha = strSenha;
         }
     }
 }

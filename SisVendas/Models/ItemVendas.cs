@@ -34,5 +34,14 @@ namespace SisVendas.Models
             this.douQuant = douQuant;
             this.douValor = douValor;
         }
+
+        public ItemVendas(int produtoId, double douQuant, double douValor)
+        {
+            ProdutoId = produtoId;
+            this.douQuant = douQuant;
+            this.douValor = douValor;
+        }
+
+
     }
 }

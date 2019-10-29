@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SisVendas.Models;
@@ -20,6 +21,44 @@ namespace SisVendas.Controllers
         {
             _vendedorService = vendedorService;
         }
+
+
+        // GET: Vendedores/Login
+        [HttpGet]
+        public IActionResult Login(int? id)
+        {
+
+            HttpContext.Session.SetString("IdUserLogado", string.Empty);
+            HttpContext.Session.SetString("NomeUserLogado", string.Empty);
+
+            return View();
+        }
+
+        // POST: Vendedores/Login
+        [HttpPost]
+        public async Task<IActionResult> Login(Vendedor vendedor)
+        {
+            if (!ModelState.IsValid)
+            {
+                var loginok = await _vendedorService.ValidarLoginAsync(vendedor);
+
+                if (loginok != null)
+                {
+                    String IdLogin = loginok.IdVend.ToString();
+                    HttpContext.Session.SetString("IdUserLogado", IdLogin);
+                    HttpContext.Session.SetString("NomeUserLogado", loginok.StrNomeVend);
+                    return RedirectToAction("index", "Home");
+                }
+                else
+                {
+                    TempData["ErroLogin"] = "Email ou Senha inválidos";
+                }
+            }
+
+            return View();
+        }
+
+
 
 
 
@@ -133,7 +172,7 @@ namespace SisVendas.Controllers
                 return NotFound();
             }
 
-            VendedorFormViewModel vwModel = new VendedorFormViewModel { Vendedor = vendedor};
+            VendedorFormViewModel vwModel = new VendedorFormViewModel { Vendedor = vendedor };
             return View(vwModel);
         }
 
@@ -170,7 +209,7 @@ namespace SisVendas.Controllers
             else
             {
                 var vendedores = await _vendedorService.FindAllAsync();
-                VendedorFormViewModel vwModel = new VendedorFormViewModel { Vendedores = vendedores};
+                VendedorFormViewModel vwModel = new VendedorFormViewModel { Vendedores = vendedores };
                 return View(vwModel);
             }
         }

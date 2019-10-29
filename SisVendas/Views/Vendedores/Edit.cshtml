@@ -14,7 +14,7 @@
 
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-for="Vendedor.IdVend" />
-            
+
             <div class="form-group">
                 <label asp-for="Vendedor.StrNomeVend" class="control-label">Vendedor</label>
                 <input asp-for="Vendedor.StrNomeVend" class="form-control" />
@@ -30,6 +30,13 @@
                 <input asp-for="Vendedor.douSalBase" class="form-control" />
                 <span asp-validation-for="Vendedor.douSalBase" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Vendedor.strSenha" class="control-label">Salário Base</label>
+                <input asp-for="Vendedor.strSenha" class="form-control" />
+                <span asp-validation-for="Vendedor.strSenha" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-default" />
             </div>

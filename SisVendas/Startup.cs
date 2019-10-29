@@ -34,6 +34,9 @@ namespace SisVendas
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSession();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
             services.AddDbContext<SisVendasContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("SisVendasContext"), builder =>
@@ -45,7 +48,7 @@ namespace SisVendas
             services.AddScoped<VendedorService>();
             services.AddScoped<VendasService>();
             services.AddScoped<FormaPagtoService>();
-            services.AddScoped<DepartamentoService>();
+            services.AddScoped<DepartamentoService>();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,12 +83,14 @@ namespace SisVendas
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Vendedores}/{action=Login}/{id?}");
+
             });
         }
     }

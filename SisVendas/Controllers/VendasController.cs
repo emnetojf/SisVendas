@@ -5,6 +5,7 @@ using SisVendas.Models;
 using SisVendas.Models.ViewModels;
 using SisVendas.Services;
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 
 namespace SisVendas.Controllers
@@ -75,8 +76,7 @@ namespace SisVendas.Controllers
             }
 
             ViewBag.ItemVendas = qryItemVendas;
-
-
+            
             return View(venda);
            
         }
@@ -88,7 +88,6 @@ namespace SisVendas.Controllers
         public async Task<IActionResult> Create()
         {
 
-            //var vendas = await _vendasService.FindAllAsync();   Vendas = vendas,
             var clientes = await _clienteService.FindAllAsync();
             var vendedores = await _vendedorService.FindAllAsync();
             var formapagtos = await _formaPagtoService.FindAllAsync();
@@ -117,20 +116,18 @@ namespace SisVendas.Controllers
             await _vendasService.InsertAsync(venda);
 
             // Recupera a Venda gravada para selecionar o IdVend
-            var Vend = await _vendasService.FindByVendaAsync(venda);
+            var VendID = venda.IdVenda;
 
             // Recupera a lista de itens produtos 
+            System.Collections.Generic.List<ItemVendas> listItemVendas = JsonConvert.DeserializeObject<System.Collections.Generic.List<ItemVendas>>(venda.ListaProdutos);
 
-            System.Collections.Generic.List<ItemVendas> listItemVendas = JsonConvert.DeserializeObject<System.Collections.Generic.List<ItemVendas>>(Vend.ListaProdutos);
-
-            ItemVendas itemVendas;
-
+            ItemVendas itemVendas;           
 
             for (int i = 0; i < listItemVendas.Count; i++)
             {
                 itemVendas = new ItemVendas
                 {
-                    VendasId = Vend.IdVenda,
+                    VendasId = VendID,
                     ProdutoId = listItemVendas[i].ProdutoId,
                     douQuant = listItemVendas[i].douQuant,
                     douValor = listItemVendas[i].douValor
@@ -139,8 +136,7 @@ namespace SisVendas.Controllers
                 // Grava os dados itens
                 await _vendasService.InsertItensVendAsync(itemVendas);
             }
-
-
+            
             return RedirectToAction(nameof(Index));
         }
 
@@ -176,9 +172,7 @@ namespace SisVendas.Controllers
             }
 
 
-            ViewBag.Totalvenda = Totalvenda;
-
-
+            ViewBag.Totalvenda = Totalvenda.ToString("F2");
 
             ViewBag.ItemVendas = qryItemVendas;
 
@@ -221,7 +215,48 @@ namespace SisVendas.Controllers
             }
 
 
-            VendasFormViewModel vwModel = new VendasFormViewModel { Venda = venda };
+            var qryItemVendas = await _vendasService.FindItemVendaByIDAsync(id.Value);
+
+            if (qryItemVendas == null)
+            {
+                return NotFound();
+            }
+
+
+            double Totalvenda = 0.00;
+
+            ArrayList ListaProdutos = new ArrayList();
+            ItemVendas itemVendas;
+
+            for (int i = 0; i < qryItemVendas.Count; i++)
+            {
+                itemVendas = new ItemVendas
+                {
+                    ProdutoId = qryItemVendas[i].ProdutoId,
+                    douQuant = qryItemVendas[i].douQuant,
+                    douValor = qryItemVendas[i].douValor
+                };
+
+                ListaProdutos.Add(itemVendas);
+                
+
+                Totalvenda += qryItemVendas[i].douQuant * qryItemVendas[i].douValor;
+            }
+
+            
+            ViewBag.Totalvenda = Totalvenda.ToString("F2");
+
+            ViewBag.ItemVendas = qryItemVendas;
+
+           
+            
+
+            var clientes = await _clienteService.FindAllAsync();
+            var vendedores = await _vendedorService.FindAllAsync();
+            var formapagtos = await _formaPagtoService.FindAllAsync();
+            var produtos = await _produtoService.FindAllAsync();
+          
+            VendasFormViewModel vwModel = new VendasFormViewModel { Venda = venda, Clientes = clientes, Vendedores = vendedores, FormaPagtos = formapagtos, Produtos = produtos};
             return View(vwModel);
         }
 
@@ -229,9 +264,9 @@ namespace SisVendas.Controllers
         // POST: Vendas/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Vendas vendas)
+        public async Task<IActionResult> Edit(int id, Vendas venda)
         {
-            if (id != vendas.IdVenda)
+            if (id != venda.IdVenda)
             {
                 return NotFound();
             }
@@ -240,12 +275,37 @@ namespace SisVendas.Controllers
             {
                 try
                 {
-                    await _vendasService.UpdateAsync(vendas);
+                    await _vendasService.UpdateAsync(venda);
+
+                    // Exclui os itens para adiciona-los novamente
+                    await _vendasService.RemoveItensVendAsync(venda.IdVenda);
+
+                    // Recupera a lista de itens produtos 
+                    System.Collections.Generic.List<ItemVendas> listItemVendas = JsonConvert.DeserializeObject<System.Collections.Generic.List<ItemVendas>>(venda.ListaProdutos);
+
+                    ItemVendas itemVendas;
+
+
+                    for (int i = 0; i < listItemVendas.Count; i++)
+                    {
+                        itemVendas = new ItemVendas
+                        {
+                            VendasId = id,
+                            ProdutoId = listItemVendas[i].ProdutoId,
+                            douQuant = listItemVendas[i].douQuant,
+                            douValor = listItemVendas[i].douValor
+                        };
+
+                        // Grava os dados itens
+                        await _vendasService.InsertItensVendAsync(itemVendas);
+                    }
+                                                         
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (id != vendas.IdVenda)
+                    if (id != venda.IdVenda)
                     {
                         return NotFound();
                     }
@@ -256,10 +316,9 @@ namespace SisVendas.Controllers
                 }
             }
             else
-            {
-
-                var venda = await _vendasService.FindAllAsync();
-                VendasFormViewModel vwModel = new VendasFormViewModel { Vendas = venda };
+            {   
+                var vend = await _vendasService.FindAllAsync();
+                VendasFormViewModel vwModel = new VendasFormViewModel { Vendas = vend };
                 return View(vwModel);
             }
         }

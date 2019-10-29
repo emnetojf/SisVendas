@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SisVendas.Models;
 
 namespace SisVendas.Migrations
 {
     [DbContext(typeof(SisVendasContext))]
-    partial class SisVendasContextModelSnapshot : ModelSnapshot
+    [Migration("20190608003912_Inicial")]
+    partial class Inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,11 +31,11 @@ namespace SisVendas.Migrations
 
                     b.Property<int>("Sexo");
 
-                    b.Property<string>("StrNomeCli")
+                    b.Property<int>("UF");
+
+                    b.Property<string>("strNomeCli")
                         .IsRequired()
                         .HasMaxLength(60);
-
-                    b.Property<int>("UF");
 
                     b.HasKey("IdCli");
 
@@ -72,7 +74,7 @@ namespace SisVendas.Migrations
 
             modelBuilder.Entity("SisVendas.Models.ItemVendas", b =>
                 {
-                    b.Property<int>("ItemID")
+                    b.Property<int>("ItemVendasID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -80,16 +82,15 @@ namespace SisVendas.Migrations
 
                     b.Property<int>("VendasId");
 
-                    b.Property<double>("douQuant");
-
                     b.Property<double>("douValor");
 
-                    b.HasKey("ItemID");
+                    b.Property<int>("intQuant");
+
+                    b.HasKey("ItemVendasID");
 
                     b.HasIndex("ProdutoId");
 
-                    b.HasIndex("VendasId")
-                        .IsUnique();
+                    b.HasIndex("VendasId");
 
                     b.ToTable("ItemVendas");
                 });
@@ -100,26 +101,13 @@ namespace SisVendas.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DepartamentoId");
-
                     b.Property<double>("douPreco");
-
-                    b.Property<double>("douQuant");
-
-                    b.Property<string>("strFoto")
-                        .IsRequired();
 
                     b.Property<string>("strNomeProd")
                         .IsRequired()
                         .HasMaxLength(60);
 
-                    b.Property<string>("strUnid")
-                        .IsRequired()
-                        .HasMaxLength(3);
-
                     b.HasKey("IdProd");
-
-                    b.HasIndex("DepartamentoId");
 
                     b.ToTable("Produtos");
                 });
@@ -134,10 +122,6 @@ namespace SisVendas.Migrations
 
                     b.Property<int>("FormaPagtoId");
 
-                    b.Property<string>("ListaProdutos");
-
-                    b.Property<int?>("ProdutoIdProd");
-
                     b.Property<int>("Status");
 
                     b.Property<int>("VendedorId");
@@ -149,8 +133,6 @@ namespace SisVendas.Migrations
                     b.HasIndex("ClienteId");
 
                     b.HasIndex("FormaPagtoId");
-
-                    b.HasIndex("ProdutoIdProd");
 
                     b.HasIndex("VendedorId");
 
@@ -172,9 +154,6 @@ namespace SisVendas.Migrations
                     b.Property<string>("strEmail")
                         .IsRequired();
 
-                    b.Property<string>("strSenha")
-                        .IsRequired();
-
                     b.HasKey("IdVend");
 
                     b.ToTable("Vendedor");
@@ -188,23 +167,15 @@ namespace SisVendas.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SisVendas.Models.Vendas", "Vendas")
-                        .WithOne("ItemVendas")
-                        .HasForeignKey("SisVendas.Models.ItemVendas", "VendasId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SisVendas.Models.Produto", b =>
-                {
-                    b.HasOne("SisVendas.Models.Departamento", "Departamento")
-                        .WithMany("Produtos")
-                        .HasForeignKey("DepartamentoId")
+                        .WithMany()
+                        .HasForeignKey("VendasId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SisVendas.Models.Vendas", b =>
                 {
                     b.HasOne("SisVendas.Models.Cliente", "Cliente")
-                        .WithMany("Vendas")
+                        .WithMany()
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -213,12 +184,8 @@ namespace SisVendas.Migrations
                         .HasForeignKey("FormaPagtoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SisVendas.Models.Produto", "Produto")
-                        .WithMany("Vendas")
-                        .HasForeignKey("ProdutoIdProd");
-
                     b.HasOne("SisVendas.Models.Vendedor", "Vendedor")
-                        .WithMany("Vendas")
+                        .WithMany()
                         .HasForeignKey("VendedorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
