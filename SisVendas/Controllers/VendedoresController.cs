@@ -25,17 +25,13 @@ namespace SisVendas.Controllers
 
         // GET: Vendedores/Login
         [HttpGet]
-<<<<<<< HEAD
+
         public IActionResult Login(int? id)
         {
 
             HttpContext.Session.SetString("IdUserLogado", string.Empty);
-            HttpContext.Session.SetString("NomeUserLogado", string.Empty);
+            HttpContext.Session.SetString("NomeUserLogado", string.Empty);        
 
-=======
-        public IActionResult Login()
-        {
->>>>>>> 7693781e8a6c592bd17689265d4c755874553199
             return View();
         }
 
@@ -49,34 +45,22 @@ namespace SisVendas.Controllers
 
                 if (loginok != null)
                 {
-<<<<<<< HEAD
+
                     String IdLogin = loginok.IdVend.ToString();
                     HttpContext.Session.SetString("IdUserLogado", IdLogin);
                     HttpContext.Session.SetString("NomeUserLogado", loginok.StrNomeVend);
-=======
->>>>>>> 7693781e8a6c592bd17689265d4c755874553199
+
                     return RedirectToAction("index", "Home");
                 }
                 else
                 {
-<<<<<<< HEAD
+
                     TempData["ErroLogin"] = "Email ou Senha inválidos";
                 }
             }
 
             return View();
         }
-
-=======
-                    TempData["ErroLogin"] = "Email ou Senha inválidos";    
-                }
-            }
-            
-            return View();
-        }
-                                           
->>>>>>> 7693781e8a6c592bd17689265d4c755874553199
-
 
 
 
